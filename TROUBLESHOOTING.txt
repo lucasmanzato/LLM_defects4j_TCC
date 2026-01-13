@@ -1,0 +1,72 @@
+TROUBLESHOOTING: QUOTA GEMINI API
+Data: 2026-01-12
+
+PROBLEMA: Erro 429 RESOURCE_EXHAUSTED
+- Mensagem: "You exceeded your current quota, please check your plan and billing details"
+- Causa: Limite de requisições do free tier atingido
+
+SOLUÇÕES:
+
+1) Aguardar renovação automática
+   - Free tier: quota renova a cada 24 horas (diária) ou mensalmente
+   - Verificar status: https://ai.dev/rate-limit
+   - Tempo estimado: aguardar até próximo dia/mês
+
+2) Obter nova chave API
+   - Criar novo projeto no Google AI Studio: https://aistudio.google.com
+   - Gerar nova API key no novo projeto
+   - Atualizar .env:
+     GEMINI_API_KEY=nova_chave_aqui
+
+3) Habilitar billing (pay-as-you-go)
+   - Acessar: https://ai.google.dev/gemini-api/docs/rate-limits
+   - Habilitar billing no projeto
+   - Quotas aumentam significativamente (15 RPM → 1000+ RPM)
+
+4) Usar modelo alternativo (se disponível)
+   - Tentar gemini-pro ou gemini-1.5-pro se tiver quota
+   - Editar .env:
+     GEMINI_MODEL=gemini-pro
+   - Nota: alguns modelos só estão disponíveis com billing
+
+5) Modo fallback: continuar apenas com heurísticas
+   - Desabilitar LLM temporariamente:
+     $env:USE_LLM = "0"
+   - Resultados ainda úteis com heurísticas
+
+MODELOS DISPONÍVEIS (google.genai):
+- gemini-2.0-flash-exp (experimental, free tier limitado)
+- gemini-1.5-pro (requer billing ou quota especial)
+- gemini-1.5-flash (não disponível em v1beta - 404 NOT_FOUND)
+
+VERIFICAR QUOTA:
+```powershell
+cd "C:\Users\lucas\OneDrive\Área de Trabalho\TCC\LLM_defects4j_TCC"
+python -c "from dotenv import load_dotenv; load_dotenv(); import os; from google import genai; client = genai.Client(api_key=os.environ['GEMINI_API_KEY']); print('Testing...'); response = client.models.generate_content(model='gemini-2.0-flash-exp', contents='test')"
+```
+
+Se funcionar: quota renovada
+Se 429: ainda esgotada
+Se 404: modelo indisponível
+
+RODAR PIPELINE SEM LLM:
+```powershell
+cd "C:\Users\lucas\OneDrive\Área de Trabalho\TCC\LLM_defects4j_TCC"
+$env:USE_LLM = "0"
+python run_filter.py
+```
+
+RODAR PIPELINE COM LLM (quando quota renovar):
+```powershell
+cd "C:\Users\lucas\OneDrive\Área de Trabalho\TCC\LLM_defects4j_TCC"
+$env:USE_LLM = "1"
+python run_filter.py
+```
+
+REFERÊNCIAS:
+- Rate limits: https://ai.google.dev/gemini-api/docs/rate-limits
+- Monitor usage: https://ai.dev/rate-limit
+- Google AI Studio: https://aistudio.google.com
+- Billing setup: https://console.cloud.google.com/billing
+
+FIM

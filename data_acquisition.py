@@ -5,26 +5,31 @@ import subprocess
 
 def instalar_dependencias():
     """
-    Verifica e instala as dependências necessárias (GitPython).
-    Útil para ambientes como Google Colab.
+    Verifica e instala as dependências necessárias (GitPython) e importa
+    o módulo no escopo global para uso nas funções posteriores.
     """
     try:
-        import git
+        import importlib
+        globals()['git'] = importlib.import_module('git')
         print("GitPython já está instalado.")
+        return
     except ImportError:
         print("GitPython não encontrado. Instalando...")
         try:
             subprocess.check_call([sys.executable, "-m", "pip", "install", "GitPython"])
             print("GitPython instalado com sucesso.")
-            global git
-            import git
+            import importlib
+            try:
+                globals()['git'] = importlib.import_module('git')
+            except ImportError as e:
+                print(f"Falha ao importar GitPython após instalação: {e}")
+                sys.exit(1)
         except Exception as e:
             print(f"Falha ao instalar GitPython: {e}")
             sys.exit(1)
 
 # Chama a instalação de dependências logo no início
 instalar_dependencias()
-import git
 
 def clonar_repositorio_java(url_repo, diretorio_destino):
     """

@@ -1,3 +1,10 @@
+.env
+.env.local
 dados/
 __pycache__/
 *.pyc
+*.pyo
+.DS_Store
+node_modules/
+*.egg-info/
+.pytest_cache/
