@@ -1,65 +1,172 @@
-# LLM Defects4J Bug Snippet Filter
+# Detecção de Bugs em Java usando Similaridade Estrutural
 
-This project adds a method-level snippet filter over Java repositories, inspired by Defects4J bug themes. It extracts Java methods and ranks potentially bug-prone snippets via heuristics and optionally a Google Gemini LLM.
+Sistema de detecção de bugs baseado em padrões do Defects4J usando matching por similaridade estrutural.
 
-## Features
-- Java method extraction (via `javalang`, with regex fallback)
-- Heuristic bug detection: string `==`, off-by-one, empty catch, swallowed exception, resource leaks, equals without null-check
-- Optional LLM classification (Google Gemini), merging scores and labels
-- JSON output with top-ranked snippets
+## 📋 Estrutura do Projeto
 
-## Setup
-```powershell
-python -m pip install -r requirements.txt
+```
+LLM_defects4j_TCC/
+├── src/                      # Código fonte
+│   ├── extractors/           # Extração de código e features
+│   │   ├── java_parser.py    # Parser de métodos Java
+│   │   └── feature_extractor.py  # Extração de features estruturais
+│   ├── matchers/             # Lógica de matching
+│   │   ├── pattern_library.py    # Biblioteca de padrões Defects4J
+│   │   ├── signature_generator.py # Gerador de assinaturas
+│   │   └── similarity_matcher.py  # Matcher por similaridade
+│   ├── pipelines/            # Pipelines de execução
+│   │   └── detection_pipeline.py  # Pipeline completo
+│   └── utils/                # Utilitários
+│       └── repo_cloner.py    # Clonagem de repositórios
+├── dados/                    # Repositórios clonados
+├── outputs/                  # Resultados da análise
+├── docs/                     # Documentação adicional
+├── main.py                   # Ponto de entrada principal
+├── requirements.txt          # Dependências Python
+└── .env                      # Configurações
 ```
 
-Optionally, set Google Gemini credentials to enable LLM classification:
-```powershell
-$env:GEMINI_API_KEY = "AIzaSy..."
-# Optional: choose model
-$env:GEMINI_MODEL = "gemini-1.5-flash"
+## 🚀 Início Rápido
+
+### 1. Instalação
+
+```bash
+# Instalar dependências
+pip install -r requirements.txt
 ```
 
-## Quick Start
-Assuming the repo has already been cloned to `dados/commons-lang` by `data_acquisition.py`:
-```powershell
-python run_filter.py
-```
-Output will be saved to `dados/bug_snippets.json`.
+### 2. Configuração
 
-To run without LLM and heuristics only:
-```powershell
-$env:USE_LLM = "0"
-python run_filter.py
-```
+Edite o arquivo `.env`:
 
-To target a different repo path or output file:
-```powershell
-$env:REPO_PATH = "C:\\path\\to\\java-repo"
-$env:OUT_PATH = "C:\\path\\to\\output.json"
-python run_filter.py
-
-## Filtering Controls
-- `PATTERNS`: Comma-separated labels to keep (e.g., `equals-without-null-check,string-equality-using-==`).
-- `STRICT_FILTER`: When `1`, require all `PATTERNS` to be present; otherwise, any overlap.
-- `TOP_K`: Limit number of results (default 50).
-
-Examples:
-```powershell
-$env:PATTERNS = "equals-without-null-check,string-equality-using-=="
-$env:STRICT_FILTER = "0"
-$env:TOP_K = "30"
-python run_filter.py
-```
+```env
+REPO_URL=https://github.com/apache/commons-lang.git
+REPO_PATH=dados/commons-lang
+OUTPUT_PATH=outputs/results.json
+SIMILARITY_THRESHOLD=0.3
+TOP_K=50
 ```
 
-## Getting a Gemini API Key
-1. Go to [Google AI Studio](https://aistudio.google.com/app/apikeys)
-2. Create a new API key (free tier available)
-3. Set the environment variable as shown above
-4. Gemini is free for experimentation; higher usage may require billing
+### 3. Execução
 
-## Notes
-- LLM usage is optional and wrapped with fallback; if API calls fail, only heuristics are used.
-- Heuristics aim to reflect common patterns seen across Defects4J projects, but they are approximations; LLM can improve precision.
-- Google Gemini offers a free tier, making this approach accessible without immediate billing.
+```bash
+python main.py
+```
+
+## 📊 Como Funciona
+
+### Pipeline de 5 Passos
+
+**PASSO 1: Setup Paralelo**
+- Thread 1: Clona repositório Java
+- Thread 2: Gera assinaturas dos padrões Defects4J
+
+**PASSO 2: Extração de Métodos**
+- Parseia arquivos `.java` usando AST (javalang)
+- Extrai métodos individuais
+
+**PASSO 3: Computação de Features**
+Para cada método, extrai:
+- AST features (contagem de nós)
+- Token sequence (identificadores, keywords)
+- Control flow (if, for, while, try/catch)
+- Method calls (métodos invocados)
+- Operators (==, !=, &&, etc)
+- Complexity score (ciclomática)
+
+**PASSO 4: Matching por Similaridade**
+Calcula similaridade multi-dimensional:
+- Cosine similarity para AST (35%)
+- Jaccard similarity para control flow (25%)
+- Jaccard similarity para method calls (20%)
+- Jaccard similarity para operators (10%)
+- LCS para token sequence (10%)
+
+**PASSO 5: Ranking e Filtragem**
+- Ordena por score de similaridade
+- Retorna top-K resultados
+
+## 🎯 Padrões Detectados
+
+1. **Null Dereference**: Acesso sem verificação de null
+2. **Boundary Error**: Off-by-one em arrays/loops
+3. **String Equality**: Uso de == ao invés de .equals()
+4. **Empty Exception**: Catch vazio que engole exceções
+5. **Resource Leak**: Recursos não fechados
+6. **Missing Null Check**: Falta de verificação antes de equals()
+
+## 📄 Output
+
+### JSON (`outputs/results.json`)
+```json
+{
+  "file": "path/File.java",
+  "class": "ClassName",
+  "method": "methodName",
+  "match": {
+    "pattern_id": "null-dereference",
+    "pattern_name": "Null Dereference",
+    "score": 0.67,
+    "confidence": 0.72,
+    "breakdown": {...}
+  },
+  "snippet": "código..."
+}
+```
+
+### CSV (`outputs/results.csv`)
+Planilha com colunas: rank, file, class, method, pattern_id, similarity_score, confidence, breakdown de métricas.
+
+## ⚙️ Configurações Avançadas
+
+### Ajustar Threshold
+Altere `SIMILARITY_THRESHOLD` no `.env` (padrão: 0.3)
+- Valores mais baixos: mais resultados, menos precisos
+- Valores mais altos: menos resultados, mais precisos
+
+### Ajustar Pesos das Métricas
+Edite `src/matchers/similarity_matcher.py`:
+```python
+WEIGHTS = {
+    'ast': 0.35,
+    'control_flow': 0.25,
+    'methods': 0.20,
+    'operators': 0.10,
+    'tokens': 0.10
+}
+```
+
+## 🛠 Desenvolvimento
+
+### Adicionar Novo Padrão
+1. Edite `src/matchers/pattern_library.py`
+2. Adicione ao dicionário `PATTERNS`
+3. Forneça exemplos de código
+
+### Estrutura Modular
+- **Extractors**: Lógica de parsing e extração
+- **Matchers**: Algoritmos de matching
+- **Pipelines**: Orquestração de steps
+- **Utils**: Funções auxiliares
+
+## 📚 Documentação Adicional
+
+- [ARQUITETURA_SIMILARIDADE.md](ARQUITETURA_SIMILARIDADE.md): Detalhes técnicos
+- [CHANGELOG.md](CHANGELOG.md): Histórico de versões
+- [TROUBLESHOOTING.txt](TROUBLESHOOTING.txt): Resolução de problemas
+
+## 🤝 Contribuindo
+
+Mantenha o código limpo e organizado:
+- Use type hints
+- Docstrings em funções públicas
+- Separe responsabilidades por módulos
+- Testes em `tests/` (quando criados)
+
+## 📝 Licença
+
+MIT License - Projeto acadêmico TCC
+
+## 👤 Autor
+
+Lucas Manzato - TCC 2026
