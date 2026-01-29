@@ -70,11 +70,18 @@ class SimilarityMatcher:
         return intersection / union if union > 0 else 0.0
     
     def sequence_similarity(self, seq1: List, seq2: List) -> float:
-        """LCS-based sequence similarity."""
+        """LCS-based sequence similarity (otimizado)."""
         if not seq1 or not seq2:
             return 0.0
         
         m, n = len(seq1), len(seq2)
+        
+        # Limitar tamanho para evitar timeout
+        if m > 100 or n > 100:
+            # Usar Jaccard para sequências longas
+            return self.jaccard_similarity(seq1, seq2)
+        
+        # LCS completo para sequências curtas
         dp = [[0] * (n + 1) for _ in range(m + 1)]
         
         for i in range(1, m + 1):

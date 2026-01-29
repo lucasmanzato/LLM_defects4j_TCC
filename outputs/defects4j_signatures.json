@@ -19,8 +19,8 @@
         "if"
       ],
       "method_calls": [
-        "method",
-        "if"
+        "if",
+        "method"
       ],
       "operators": [],
       "complexity_score": 2.0
@@ -148,8 +148,8 @@
       ],
       "control_flow": [],
       "method_calls": [
-        "substring",
-        "length"
+        "length",
+        "substring"
       ],
       "operators": [],
       "complexity_score": 1.0
@@ -349,8 +349,8 @@
         "if"
       ],
       "method_calls": [
-        "equals",
-        "if"
+        "if",
+        "equals"
       ],
       "operators": [],
       "complexity_score": 2.0
