@@ -150,9 +150,9 @@ class BugDetectionPipeline:
     
     def run(self, threshold: float = 0.3, top_k: int = 50, output_path: str = 'outputs/results.json'):
         """Execute complete pipeline."""
-        print("\n" + "═"*60)
+        print("\n" + "="*60)
         print(" BUG DETECTION PIPELINE - Similarity-Based Matching")
-        print("═"*60)
+        print("="*60)
         
         # Execute steps
         self.step1_setup()
