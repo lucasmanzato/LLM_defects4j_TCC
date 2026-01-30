@@ -103,6 +103,7 @@ Responda APENAS em JSON:
         except Exception as e:
             print(f"[ERRO] Erro na classificacao: {e}")
             return None
+
     
     def health_check(self) -> Dict[str, Any]:
         """Verifica saúde da conexão com Ollama."""
