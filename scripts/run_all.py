@@ -1,5 +1,5 @@
 """
-Main script to execute the entire pipeline with report generation
+Script principal para executar todo o pipeline com geração de relatórios
 """
 import os
 import sys
@@ -8,14 +8,14 @@ import time
 from pathlib import Path
 
 def main():
-    """Executes the complete classification and report generation pipeline."""
+    """Executa o pipeline completo de classificação e geração de relatórios."""
     
     print("\n" + "="*80)
-    print(" BUG DETECTION AND CLASSIFICATION PIPELINE WITH LLAMA 2")
+    print(" PIPELINE DE DETECÇÃO E CLASSIFICAÇÃO DE BUGS COM LLAMA 2")
     print("="*80 + "\n")
     
-    # 1. Run classification
-    print("[1/3] Starting classification with LLaMA 2...")
+    # 1. Executar classificação
+    print("[1/3] Iniciando classificação com LLaMA 2...")
     print("-" * 80)
     
     proc = subprocess.Popen(
@@ -25,7 +25,7 @@ def main():
         text=True
     )
     
-    # Monitor output
+    # Monitorar saída
     while proc.poll() is None:
         try:
             line = proc.stdout.readline()
@@ -34,49 +34,49 @@ def main():
         except:
             break
     
-    # Get last output if any
+    # Obter última saída se houver
     remaining_output = proc.stdout.read()
     if remaining_output:
         print(remaining_output)
     
     if proc.returncode != 0:
-        print(f"[ERROR] Classification failed with code {proc.returncode}")
+        print(f"[ERRO] Classificação falhou com código {proc.returncode}")
         return
     
-    print("\n[OK] Classification complete!\n")
+    print("\n[OK] Classificação concluída!\n")
     
-    # 2. Generate markdown report
-    print("[2/3] Generating Markdown report...")
+    # 2. Gerar relatório markdown
+    print("[2/3] Gerando relatório Markdown...")
     print("-" * 80)
     
     try:
         from report_markdown import generate_report
         generate_report()
     except Exception as e:
-        print(f"[ERROR] Failed to generate Markdown report: {e}")
+        print(f"[ERRO] Falha ao gerar relatório Markdown: {e}")
     
-    # 3. Generate HTML report
-    print("[3/3] Generating visual HTML report...")
+    # 3. Gerar relatório HTML visual
+    print("[3/3] Gerando relatório HTML visual...")
     print("-" * 80)
     
     try:
         from report_html import generate_html_report
         generate_html_report()
     except Exception as e:
-        print(f"[ERROR] Failed to generate HTML report: {e}")
+        print(f"[ERRO] Falha ao gerar relatório HTML: {e}")
     
-    # Final summary
+    # Resumo final
     print("\n" + "="*80)
-    print(" PIPELINE COMPLETE!")
+    print(" PIPELINE CONCLUÍDO!")
     print("="*80)
-    print("\nGenerated files:")
-    print("  📊 outputs/results_with_llm.json - Results with LLM classification")
-    print("  📄 outputs/report_llm.md - Markdown report")
-    print("  🌐 outputs/report_visual.html - Visual HTML report")
-    print("\nNext steps:")
-    print("  1. Open outputs/report_visual.html in browser")
-    print("  2. Review bugs confirmed by AI")
-    print("  3. Use data for validation and fixes\n")
+    print("\nArquivos gerados:")
+    print("  📊 outputs/results_with_llm.json - Resultados com classificação LLM")
+    print("  📄 outputs/relatorio_llm.md - Relatório Markdown")
+    print("  🌐 outputs/relatorio_visual.html - Relatório HTML visual")
+    print("\nPróximos passos:")
+    print("  1. Abra outputs/relatorio_visual.html no navegador")
+    print("  2. Revise bugs confirmados pela IA")
+    print("  3. Use os dados para validação e correções\n")
 
 if __name__ == '__main__':
     main()
