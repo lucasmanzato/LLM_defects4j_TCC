@@ -1,6 +1,6 @@
 """
-Similarity-based pattern matcher.
-Compares code features against pattern signatures.
+Matcher de padrões baseado em similaridade.
+Compara características do código contra assinaturas de padrões.
 """
 import json
 import math
@@ -10,7 +10,7 @@ from dataclasses import dataclass
 
 @dataclass
 class Match:
-    """Represents a pattern match with similarity score."""
+    """Representa uma correspondência de padrão com pontuação de similaridade."""
     pattern_id: str
     pattern_name: str
     similarity_score: float
@@ -20,17 +20,17 @@ class Match:
 
 class SimilarityMatcher:
     """
-    Matches code against pattern signatures using multi-dimensional similarity.
+    Encontra correspondências de código contra assinaturas de padrões usando similaridade multidimensional.
     
-    Metrics:
-        - Cosine similarity for AST features (35%)
-        - Jaccard similarity for control flow (25%)
-        - Jaccard similarity for method calls (20%)
-        - Jaccard similarity for operators (10%)
-        - Sequence similarity for tokens (10%)
+    Métricas:
+        - Similaridade do cosseno para características AST (35%)
+        - Similaridade de Jaccard para fluxo de controle (25%)
+        - Similaridade de Jaccard para chamadas de método (20%)
+        - Similaridade de Jaccard para operadores (10%)
+        - Similaridade de sequência para tokens (10%)
     """
     
-    # Weights for each similarity component
+    # Pesos para cada componente de similaridade
     WEIGHTS = {
         'ast': 0.35,
         'control_flow': 0.25,
@@ -40,13 +40,13 @@ class SimilarityMatcher:
     }
     
     def __init__(self, signatures_path: str):
-        """Load pattern signatures from JSON."""
+        """Carrega assinaturas de padrões de JSON."""
         with open(signatures_path, 'r', encoding='utf-8') as f:
             self.signatures = json.load(f)
-        print(f"✓ Loaded signatures for {len(self.signatures)} patterns")
+        print(f"✓ Carregadas assinaturas para {len(self.signatures)} padrões")
     
     def cosine_similarity(self, vec1: Dict, vec2: Dict) -> float:
-        """Cosine similarity between feature vectors."""
+        """Similaridade do cosseno entre vetores de características."""
         all_keys = set(vec1.keys()) | set(vec2.keys())
         if not all_keys:
             return 0.0
@@ -60,7 +60,7 @@ class SimilarityMatcher:
         return dot_product / (mag1 * mag2)
     
     def jaccard_similarity(self, set1: set, set2: set) -> float:
-        """Jaccard similarity between sets."""
+        """Similaridade de Jaccard entre conjuntos."""
         if not set1 and not set2:
             return 1.0
         if not set1 or not set2:
@@ -70,7 +70,7 @@ class SimilarityMatcher:
         return intersection / union if union > 0 else 0.0
     
     def sequence_similarity(self, seq1: List, seq2: List) -> float:
-        """LCS-based sequence similarity (otimizado)."""
+        """Similaridade de sequência baseada em LCS (otimizada)."""
         if not seq1 or not seq2:
             return 0.0
         

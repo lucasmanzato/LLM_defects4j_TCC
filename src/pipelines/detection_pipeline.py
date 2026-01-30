@@ -1,6 +1,6 @@
 """
-Main bug detection pipeline using similarity matching.
-Orchestrates: clone → extract → match → rank
+Pipeline principal de detecção de bugs usando correspondência de similaridade.
+Orquestra: clonar → extrair → encontrar → classificar
 """
 import os
 import json
@@ -18,14 +18,14 @@ from matchers.similarity_matcher import SimilarityMatcher
 
 class BugDetectionPipeline:
     """
-    End-to-end pipeline for detecting bugs using structural similarity.
+    Pipeline de ponta a ponta para detectar bugs usando similaridade estrutural.
     
-    Steps:
-        1. Clone repository + Generate signatures (parallel)
-        2. Extract methods from Java files
-        3. Compute structural features
-        4. Match against pattern signatures
-        5. Rank and filter results
+    Passos:
+        1. Clonar repositório + Gerar assinaturas (paralelo)
+        2. Extrair métodos de arquivos Java
+        3. Calcular características estruturais
+        4. Encontrar correspondências contra assinaturas de padrões
+        5. Classificar e filtrar resultados
     """
     
     def __init__(self, repo_url: str, repo_path: str, signatures_path: str = 'outputs/defects4j_signatures.json'):
@@ -36,7 +36,7 @@ class BugDetectionPipeline:
         self.matcher = None
     
     def step1_setup(self) -> tuple:
-        """Step 1: Clone repo + Generate signatures in parallel."""
+        """Passo 1: Clonar repo + Gerar assinaturas em paralelo."""
         print("\n" + "="*60)
         print("STEP 1: Setup (Parallel)")
         print("="*60)
@@ -53,18 +53,18 @@ class BugDetectionPipeline:
         return clone_result, sig_result
     
     def _clone_repository(self) -> str:
-        """Clone Java repository."""
+        """Clona repositório Java."""
         success = clonar_repositorio_java(self.repo_url, self.repo_path)
         return "Success" if success else "Failed"
     
     def _generate_signatures(self) -> str:
-        """Generate pattern signatures."""
+        """Gera assinaturas de padrões."""
         generator = SignatureGenerator()
         generator.save_signatures(self.signatures_path)
         return f"Saved to {self.signatures_path}"
     
     def step2_extract_methods(self) -> List[Dict]:
-        """Step 2: Extract methods from Java files."""
+        """Passo 2: Extrair métodos de arquivos Java."""
         print("\n" + "="*60)
         print("STEP 2: Method Extraction")
         print("="*60)
@@ -72,11 +72,11 @@ class BugDetectionPipeline:
         extractor = JavaMethodExtractor(self.repo_path)
         methods = extractor.extract_from_directory()
         
-        print(f"✓ Extracted {len(methods)} methods")
+        print(f"✓ Extraídos {len(methods)} métodos")
         return methods
     
     def step3_compute_features(self, methods: List[Dict]) -> List[Dict]:
-        """Step 3: Compute structural features for each method."""
+        """Passo 3: Calcular características estruturais para cada método."""
         print("\n" + "="*60)
         print("STEP 3: Feature Computation")
         print("="*60)
@@ -91,13 +91,13 @@ class BugDetectionPipeline:
             method['features'] = features
             methods_with_features.append(method)
         
-        print(f"✓ Computed features for {len(methods_with_features)} methods")
+        print(f"✓ Características calculadas para {len(methods_with_features)} métodos")
         return methods_with_features
     
     def step4_match_patterns(self, methods: List[Dict], threshold: float = 0.3) -> List[Dict]:
-        """Step 4: Match against pattern signatures."""
+        """Passo 4: Encontrar correspondências contra assinaturas de padrões."""
         print("\n" + "="*60)
-        print(f"STEP 4: Pattern Matching (threshold={threshold})")
+        print(f"PASSO 4: Correspondência de Padrões (limiar={threshold})")
         print("="*60)
         
         self.matcher = SimilarityMatcher(self.signatures_path)
@@ -129,13 +129,13 @@ class BugDetectionPipeline:
                 ]
                 matched_methods.append(method)
         
-        print(f"✓ Found {len(matched_methods)} methods with pattern matches")
+        print(f"✓ Encontrados {len(matched_methods)} métodos com correspondências de padrão")
         return matched_methods
     
     def step5_rank_and_filter(self, matches: List[Dict], top_k: int = 50) -> List[Dict]:
-        """Step 5: Rank by similarity and select top-K."""
+        """Passo 5: Classificar por similaridade e selecionar top-K."""
         print("\n" + "="*60)
-        print(f"STEP 5: Ranking & Filtering (top-{top_k})")
+        print(f"PASSO 5: Classificação & Filtragem (top-{top_k})")
         print("="*60)
         
         ranked = sorted(
@@ -145,28 +145,28 @@ class BugDetectionPipeline:
         )
         
         top_results = ranked[:top_k]
-        print(f"✓ Selected top-{len(top_results)} results")
+        print(f"✓ Selecionados top-{len(top_results)} resultados")
         return top_results
     
     def run(self, threshold: float = 0.3, top_k: int = 50, output_path: str = 'outputs/results.json'):
-        """Execute complete pipeline."""
+        """Executa pipeline completo."""
         print("\n" + "="*60)
-        print(" BUG DETECTION PIPELINE - Similarity-Based Matching")
+        print(" PIPELINE DE DETECÇÃO DE BUGS - Correspondência Baseada em Similaridade")
         print("="*60)
         
-        # Execute steps
+        # Executar passos
         self.step1_setup()
         methods = self.step2_extract_methods()
         methods_with_features = self.step3_compute_features(methods)
         matches = self.step4_match_patterns(methods_with_features, threshold)
         top_results = self.step5_rank_and_filter(matches, top_k)
         
-        # Save results (JSON + CSV)
+        # Salvar resultados (JSON + CSV)
         self._save_results(top_results, output_path)
         self._export_to_csv(top_results, output_path.replace('.json', '.csv'))
         
         print("\n" + "="*60)
-        print(f"✓ Pipeline completed.")
+        print(f"✓ Pipeline concluído.")
         print(f"  JSON: {output_path}")
         print(f"  CSV: {output_path.replace('.json', '.csv')}")
         print("="*60 + "\n")
@@ -174,7 +174,7 @@ class BugDetectionPipeline:
         return top_results
     
     def _save_results(self, results: List[Dict], output_path: str):
-        """Save results to JSON."""
+        """Salva resultados em JSON."""
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         
         clean_results = []
@@ -185,7 +185,7 @@ class BugDetectionPipeline:
                 'method': r.get('name'),
                 'match': r.get('match'),
                 'all_matches': r.get('all_matches', []),
-                'snippet': r.get('code', '')[:500]  # Preview
+                'snippet': r.get('code', '')[:500]  # Visualização prévia
             }
             clean_results.append(clean)
         
@@ -193,11 +193,11 @@ class BugDetectionPipeline:
             json.dump(clean_results, f, indent=2, ensure_ascii=False)
     
     def _export_to_csv(self, results: List[Dict], csv_path: str):
-        """Export results to CSV format."""
+        """Exporta resultados em formato CSV."""
         with open(csv_path, 'w', encoding='utf-8', newline='') as f:
             writer = csv.writer(f)
             
-            # Header
+            # Cabeçalho
             writer.writerow([
                 'rank',
                 'file',
@@ -215,11 +215,11 @@ class BugDetectionPipeline:
                 'snippet_preview'
             ])
             
-            # Data
+            # Dados
             for idx, result in enumerate(results, 1):
                 match = result.get('match', {})
                 breakdown = match.get('breakdown', {})
-                snippet = result.get('snippet', '')[:200]  # Preview
+                snippet = result.get('snippet', '')[:200]  # Visualização prévia
                 
                 writer.writerow([
                     idx,

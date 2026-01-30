@@ -1,6 +1,6 @@
 """
-Java code parser and method extractor.
-Uses javalang for AST parsing with regex fallback.
+Analisador de código Java e extrator de métodos.
+Usa javalang para análise AST com alternativa regex.
 """
 import os
 import re
@@ -12,21 +12,21 @@ try:
     JAVALANG_AVAILABLE = True
 except ImportError:
     JAVALANG_AVAILABLE = False
-    print("Warning: javalang not available, using regex fallback")
+    print("Aviso: javalang não disponível, usando alternativa regex")
 
 
 class JavaMethodExtractor:
-    """Extracts methods from Java source files."""
+    """Extrai métodos de arquivos de código-fonte Java."""
     
     def __init__(self, root_dir: str):
         self.root_dir = root_dir
     
     def extract_from_file(self, file_path: str) -> List[Dict[str, Any]]:
         """
-        Extract methods from a single Java file.
+        Extrai métodos de um único arquivo Java.
         
-        Returns:
-            List of dicts with keys: file, class, name, code
+        Retorna:
+            Lista de dicionários com chaves: file, class, name, code
         """
         try:
             with open(file_path, 'r', encoding='utf-8', errors='ignore') as f:
@@ -40,19 +40,19 @@ class JavaMethodExtractor:
             return self._extract_with_regex(file_path, content)
     
     def _extract_with_javalang(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Extract using AST parser."""
+        """Extrai usando analisador AST."""
         methods = []
         try:
             tree = javalang.parse.parse(content)
             for path, node in tree.filter(javalang.tree.MethodDeclaration):
-                # Get class name
+                # Obter nome da classe
                 class_name = None
                 for p in path:
                     if isinstance(p, javalang.tree.ClassDeclaration):
                         class_name = p.name
                         break
                 
-                # Extract method code (approximation)
+                # Extrair código do método (aproximação)
                 start_pos = node.position.line if node.position else 0
                 lines = content.split('\n')
                 method_code = self._extract_method_body(lines, start_pos - 1)
@@ -64,16 +64,16 @@ class JavaMethodExtractor:
                     'code': method_code
                 })
         except Exception:
-            # Fallback to regex on parse error
+            # Alternativa para regex em caso de erro de análise
             return self._extract_with_regex(file_path, content)
         
         return methods
     
     def _extract_with_regex(self, file_path: str, content: str) -> List[Dict[str, Any]]:
-        """Extract using regex patterns."""
+        """Extrai usando padrões regex."""
         methods = []
         
-        # Pattern for method declaration
+        # Padrão para declaração de método
         pattern = r'(public|private|protected|static|\s)+[\w<>\[\]]+\s+(\w+)\s*\([^)]*\)\s*\{[^}]*\}'
         
         for match in re.finditer(pattern, content, re.MULTILINE | re.DOTALL):
@@ -82,7 +82,7 @@ class JavaMethodExtractor:
             
             methods.append({
                 'file': file_path,
-                'class': None,  # Hard to extract reliably with regex
+                'class': None,  # Difícil de extrair confiável com regex
                 'name': method_name,
                 'code': method_code
             })
@@ -90,7 +90,7 @@ class JavaMethodExtractor:
         return methods
     
     def _extract_method_body(self, lines: List[str], start_line: int) -> str:
-        """Extract method body by counting braces."""
+        """Extrai corpo do método contando chaves."""
         if start_line >= len(lines):
             return ""
         

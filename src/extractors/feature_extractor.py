@@ -1,6 +1,6 @@
 """
-Feature extraction from Java code for pattern matching.
-Computes structural signatures from source code.
+Extração de características de código Java para correspondência de padrões.
+Calcula assinaturas estruturais do código-fonte.
 """
 import re
 from typing import Dict, List
@@ -14,15 +14,15 @@ except ImportError:
 
 
 class FeatureExtractor:
-    """Extracts structural features from Java code."""
+    """Extrai características estruturais de código Java."""
     
     @staticmethod
     def extract_all_features(code: str) -> Dict:
         """
-        Extract complete feature set from code.
+        Extrai conjunto completo de características do código.
         
-        Returns:
-            Dict with keys: ast_features, token_sequence, control_flow,
+        Retorna:
+            Dicionário com chaves: ast_features, token_sequence, control_flow,
                           method_calls, operators, complexity_score
         """
         if not code:
@@ -46,7 +46,7 @@ class FeatureExtractor:
     
     @staticmethod
     def extract_ast_features(code: str) -> Dict[str, int]:
-        """Extract AST node counts."""
+        """Extrai contagem de nós AST."""
         features = Counter()
         
         if JAVALANG_AVAILABLE:
@@ -58,7 +58,7 @@ class FeatureExtractor:
             except:
                 pass
         
-        # Fallback: regex-based counting
+        # Alternativa: contagem baseada em regex
         features['IfStatement'] = len(re.findall(r'\bif\s*\(', code))
         features['ForStatement'] = len(re.findall(r'\bfor\s*\(', code))
         features['WhileStatement'] = len(re.findall(r'\bwhile\s*\(', code))
@@ -69,7 +69,7 @@ class FeatureExtractor:
     
     @staticmethod
     def extract_tokens(code: str) -> List[str]:
-        """Extract token sequence (identifiers, keywords, operators)."""
+        """Extrai sequência de tokens (identificadores, palavras-chave, operadores)."""
         if JAVALANG_AVAILABLE:
             try:
                 tokens = []
@@ -78,17 +78,17 @@ class FeatureExtractor:
                                         javalang.tokenizer.Keyword,
                                         javalang.tokenizer.Operator)):
                         tokens.append(str(token.value))
-                return tokens[:50]  # Limit length
+                return tokens[:50]  # Limitar tamanho
             except:
                 pass
         
-        # Fallback
+        # Alternativa
         tokens = re.findall(r'\b\w+\b|[=!<>]+|[+\-*/]', code)
         return tokens[:50]
     
     @staticmethod
     def extract_control_flow(code: str) -> List[str]:
-        """Extract control flow structures."""
+        """Extrai estruturas de fluxo de controle."""
         structures = []
         patterns = {
             'if': r'\bif\s*\(',

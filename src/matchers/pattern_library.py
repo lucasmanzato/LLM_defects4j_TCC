@@ -1,6 +1,6 @@
 """
-Defects4J pattern library.
-Defines known bug patterns from Defects4J dataset.
+Biblioteca de padrões Defects4J.
+Define padrões conhecidos de bugs do conjunto Defects4J.
 """
 from typing import Dict, List
 from dataclasses import dataclass, asdict
@@ -9,7 +9,7 @@ import json
 
 @dataclass
 class BugPattern:
-    """Represents a known bug pattern."""
+    """Representa um padrão de bug conhecido."""
     pattern_id: str
     name: str
     description: str
@@ -20,7 +20,7 @@ class BugPattern:
 
 
 class Defects4JPatterns:
-    """Library of known Defects4J bug patterns."""
+    """Biblioteca de padrões conhecidos de bugs Defects4J."""
     
     PATTERNS = {
         'null-dereference': BugPattern(

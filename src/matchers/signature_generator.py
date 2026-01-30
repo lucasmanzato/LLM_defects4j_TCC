@@ -1,6 +1,6 @@
 """
-Pattern signature generator.
-Creates structural signatures from bug pattern examples.
+Gerador de assinatura de padrões.
+Cria assinaturas estruturais de exemplos de padrões de bugs.
 """
 import json
 from typing import Dict, List
@@ -12,7 +12,7 @@ from matchers.pattern_library import Defects4JPatterns
 
 @dataclass
 class PatternSignature:
-    """Structural signature of a bug pattern."""
+    """Assinatura estrutural de um padrão de bug."""
     pattern_id: str
     pattern_name: str
     ast_features: Dict[str, int]
@@ -27,14 +27,14 @@ class PatternSignature:
 
 
 class SignatureGenerator:
-    """Generates structural signatures from pattern examples."""
+    """Gera assinaturas estruturais de exemplos de padrões."""
     
     def __init__(self):
         self.patterns = Defects4JPatterns.get_all_patterns()
         self.feature_extractor = FeatureExtractor()
     
     def generate_signature(self, pattern_id: str, example_code: str) -> PatternSignature:
-        """Generate signature from example code."""
+        """Gera assinatura a partir do código de exemplo."""
         pattern = self.patterns[pattern_id]
         features = self.feature_extractor.extract_all_features(example_code)
         
@@ -50,7 +50,7 @@ class SignatureGenerator:
         )
     
     def build_signature_library(self) -> Dict[str, List[PatternSignature]]:
-        """Build complete signature library from all patterns."""
+        """Constrói biblioteca completa de assinaturas de todos os padrões."""
         library = {}
         
         for pattern_id, pattern in self.patterns.items():
@@ -63,7 +63,7 @@ class SignatureGenerator:
         return library
     
     def save_signatures(self, output_path: str):
-        """Save signatures to JSON."""
+        """Salva assinaturas para JSON."""
         library = self.build_signature_library()
         
         data = {
@@ -74,7 +74,7 @@ class SignatureGenerator:
         with open(output_path, 'w', encoding='utf-8') as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
         
-        print(f"✓ Saved {len(library)} pattern signatures to {output_path}")
+        print(f"✓ Salvas {len(library)} assinaturas de padrões em {output_path}")
         return output_path
 
 
