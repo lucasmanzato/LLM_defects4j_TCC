@@ -1,5 +1,5 @@
 """
-Script que aguarda conclusão da classificação e gera relatórios automaticamente
+Script that waits for classification completion and generates reports automatically
 """
 import json
 import time
@@ -7,10 +7,10 @@ import os
 from datetime import datetime
 
 def wait_for_classification():
-    """Aguarda classificação ser concluída."""
+    """Waits for classification to complete."""
     
     print("\n" + "="*80)
-    print(" AGUARDANDO CONCLUSÃO DA CLASSIFICAÇÃO COM LLAMA 2")
+    print(" WAITING FOR LLAMA 2 CLASSIFICATION TO COMPLETE")
     print("="*80 + "\n")
     
     results_path = 'outputs/results_with_llm.json'
@@ -19,14 +19,14 @@ def wait_for_classification():
     while True:
         try:
             if not os.path.exists(results_path):
-                print("[AGUARDANDO] Arquivo de resultados ainda não criado...")
+                print("[WAITING] Results file not yet created...")
                 time.sleep(10)
                 continue
             
             with open(results_path, 'r', encoding='utf-8') as f:
                 results = json.load(f)
             
-            # Contar classificações válidas (não são "Erro ao parsear resposta")
+            # Count valid classifications (not "Parse error")
             classified = sum(1 for r in results if r.get('llm_classification') 
                            and r.get('llm_classification', {}).get('motivo', '').lower() != 'erro ao parsear resposta')
             
@@ -38,65 +38,65 @@ def wait_for_classification():
                 filled = int(bar_length * classified / total)
                 bar = '█' * filled + '░' * (bar_length - filled)
                 
-                elapsed = (classified * 0.8)  # Estimativa: ~0.8s por bug
+                elapsed = (classified * 0.8)  # Estimate: ~0.8s per bug
                 remaining = ((total - classified) * 0.8)
                 
                 print(f"\r[{bar}] {classified}/{total} ({percentage:5.1f}%) | "
-                      f"Tempo: {elapsed:5.0f}s | Restante: ~{remaining:5.0f}s", 
+                      f"Time: {elapsed:5.0f}s | Remaining: ~{remaining:5.0f}s", 
                       end="", flush=True)
                 
                 last_count = classified
             
-            # Se terminou
+            # If finished
             if classified == total:
-                print(f"\n\n✅ CLASSIFICAÇÃO CONCLUÍDA!")
+                print(f"\n\n✅ CLASSIFICATION COMPLETE!")
                 print(f"   Timestamp: {datetime.now().strftime('%H:%M:%S')}")
                 return results
             
             time.sleep(3)
             
         except json.JSONDecodeError:
-            print("[INFO] Arquivo sendo escrito...")
+            print("[INFO] File is being written...")
             time.sleep(5)
         except KeyboardInterrupt:
-            print("\n[CANCELADO] Aguardo interrompido")
+            print("\n[CANCELLED] Wait interrupted")
             return None
         except Exception as e:
-            print(f"[ERRO] {e}")
+            print(f"[ERROR] {e}")
             time.sleep(5)
 
 def generate_reports():
-    """Gera todos os relatórios."""
+    """Generates all reports."""
     
     print("\n" + "="*80)
-    print(" GERANDO RELATÓRIOS")
+    print(" GENERATING REPORTS")
     print("="*80 + "\n")
     
     try:
-        print("[1/2] Gerando relatório Markdown...")
-        from generate_report import generate_report
+        print("[1/2] Generating Markdown report...")
+        from report_markdown import generate_report
         generate_report()
     except Exception as e:
-        print(f"[ERRO] Falha ao gerar Markdown: {e}")
+        print(f"[ERROR] Failed to generate Markdown: {e}")
     
     try:
-        print("[2/2] Gerando relatório HTML...")
-        from generate_html_report import generate_html_report
+        print("[2/2] Generating HTML report...")
+        from report_html import generate_html_report
         generate_html_report()
     except Exception as e:
-        print(f"[ERRO] Falha ao gerar HTML: {e}")
+        print(f"[ERROR] Failed to generate HTML: {e}")
 
 def show_summary(results):
-    """Mostra resumo dos resultados."""
+    """Shows results summary."""
     
     print("\n" + "="*80)
-    print(" RESUMO DOS RESULTADOS")
+    print(" RESULTS SUMMARY")
     print("="*80 + "\n")
     
     total = len(results)
     confirmed = sum(1 for r in results if r.get('llm_classification', {}).get('eh_bug_real'))
     
-    # Stats por padrão
+    # Stats by pattern
     from collections import defaultdict
     patterns = defaultdict(lambda: {'total': 0, 'confirmed': 0})
     
@@ -106,11 +106,11 @@ def show_summary(results):
         if r.get('llm_classification', {}).get('eh_bug_real'):
             patterns[pattern]['confirmed'] += 1
     
-    print(f"Total de bugs analisados:  {total}")
-    print(f"Bugs confirmados:          {confirmed} ({confirmed/total*100:.1f}%)")
-    print(f"Bugs não confirmados:      {total-confirmed} ({(total-confirmed)/total*100:.1f}%)\n")
+    print(f"Total bugs analyzed:       {total}")
+    print(f"Confirmed bugs:            {confirmed} ({confirmed/total*100:.1f}%)")
+    print(f"Unconfirmed bugs:          {total-confirmed} ({(total-confirmed)/total*100:.1f}%)\n")
     
-    print(f"{'Padrão':<25} {'Total':<8} {'Confirmados':<15} {'Taxa':<10}")
+    print(f"{'Pattern':<25} {'Total':<8} {'Confirmed':<15} {'Rate':<10}")
     print("-" * 60)
     
     for pattern in sorted(patterns.keys()):
@@ -121,32 +121,32 @@ def show_summary(results):
         print(f"{pattern:<25} {total_p:<8} {conf_p:<15} {taxa:>6.1f}%")
 
 def main():
-    """Executa o fluxo completo."""
+    """Executes the complete flow."""
     
-    # Aguardar conclusão
+    # Wait for completion
     results = wait_for_classification()
     
     if results is None:
         return
     
-    # Mostrar resumo
+    # Show summary
     show_summary(results)
     
-    # Gerar relatórios
+    # Generate reports
     generate_reports()
     
-    # Mensagem final
+    # Final message
     print("\n" + "="*80)
-    print(" ✅ PIPELINE CONCLUÍDA COM SUCESSO!")
+    print(" ✅ PIPELINE COMPLETED SUCCESSFULLY!")
     print("="*80)
-    print("\n📊 Relatórios disponíveis:\n")
-    print("  1. 📄 outputs/relatorio_llm.md")
-    print("     └─ Markdown (compartilhe via email/chat)\n")
-    print("  2. 🌐 outputs/relatorio_visual.html")
-    print("     └─ HTML com gráficos (abra no navegador)\n")
+    print("\n📊 Available reports:\n")
+    print("  1. 📄 outputs/report_llm.md")
+    print("     └─ Markdown (share via email/chat)\n")
+    print("  2. 🌐 outputs/report_visual.html")
+    print("     └─ HTML with charts (open in browser)\n")
     print("  3. 📊 outputs/results_with_llm.json")
-    print("     └─ Dados brutos (importe em ferramentas)\n")
-    print("  📖 Leia: RELATORIO_GUIA.md para mais detalhes\n")
+    print("     └─ Raw data (import in tools)\n")
+    print("  📖 Read: RELATORIO_GUIA.md for more details\n")
     print("="*80 + "\n")
 
 if __name__ == '__main__':

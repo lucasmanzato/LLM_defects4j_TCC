@@ -1,31 +1,31 @@
 """
-Gera relatório visual em HTML com gráficos dos resultados
+Generates visual HTML report with charts of results
 """
 import json
 from datetime import datetime
 from collections import defaultdict
 
 def generate_html_report():
-    """Gera relatório em HTML com estatísticas visuais."""
+    """Generates HTML report with visual statistics."""
     
     try:
         with open('outputs/results_with_llm.json', 'r', encoding='utf-8') as f:
             results = json.load(f)
     except FileNotFoundError:
-        print("[ERRO] Arquivo results_with_llm.json nao encontrado")
+        print("[ERROR] File results_with_llm.json not found")
         return
     
-    # Coletar estatísticas
+    # Collect statistics
     total = len(results)
     verified = sum(1 for r in results if r.get('llm_classification', {}).get('eh_realmente_bug'))
     not_verified = total - verified
     
-    # Confiança média
+    # Average confidence
     confidences = [r.get('llm_classification', {}).get('confianca', 0) 
                   for r in results if r.get('llm_classification')]
     avg_confidence = sum(confidences) / len(confidences) if confidences else 0
     
-    # Stats por padrão
+    # Stats by pattern
     patterns_stats = defaultdict(lambda: {'total': 0, 'verified': 0, 'avg_score': 0, 'scores': []})
     
     for result in results:
@@ -42,7 +42,7 @@ def generate_html_report():
         scores = patterns_stats[pattern]['scores']
         patterns_stats[pattern]['avg_score'] = sum(scores) / len(scores) if scores else 0
     
-    # Distribuição de confiança
+    # Confidence distribution
     confidence_buckets = {
         '0% - 20%': len([c for c in confidences if c < 0.2]),
         '20% - 40%': len([c for c in confidences if 0.2 <= c < 0.4]),
@@ -51,13 +51,13 @@ def generate_html_report():
         '80% - 100%': len([c for c in confidences if c >= 0.8]),
     }
     
-    # Gerar HTML
+    # Generate HTML
     html = f"""<!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatório de Detecção de Bugs - LLaMA 2</title>
+    <title>Bug Detection Report - LLaMA 2</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <style>
         * {{
@@ -239,50 +239,50 @@ def generate_html_report():
 <body>
     <div class="container">
         <header>
-            <h1>📊 Relatório de Detecção de Bugs</h1>
-            <p>Análise com LLaMA 2 via Ollama - {datetime.now().strftime('%d de %B de %Y às %H:%M:%S')}</p>
+            <h1>📊 Bug Detection Report</h1>
+            <p>Analysis with LLaMA 2 via Ollama - {datetime.now().strftime('%d de %B de %Y às %H:%M:%S')}</p>
         </header>
         
         <div class="content">
-            <!-- Resumo Executivo -->
+            <!-- Executive Summary -->
             <section class="section">
-                <h2>📈 Resumo Executivo</h2>
+                <h2>📈 Executive Summary</h2>
                 <div class="stats-grid">
                     <div class="stat-card">
-                        <h3>Total Analisados</h3>
+                        <h3>Total Analyzed</h3>
                         <div class="stat-value">{total}</div>
                     </div>
                     <div class="stat-card">
-                        <h3>Bugs Confirmados</h3>
+                        <h3>Bugs Confirmed</h3>
                         <div class="stat-value">{verified}</div>
-                        <div class="stat-percent">{verified/total*100:.1f}% de confirmação</div>
+                        <div class="stat-percent">{verified/total*100:.1f}% confirmation rate</div>
                     </div>
                     <div class="stat-card">
-                        <h3>Não Confirmados</h3>
+                        <h3>Not Confirmed</h3>
                         <div class="stat-value">{not_verified}</div>
                         <div class="stat-percent">{not_verified/total*100:.1f}%</div>
                     </div>
                     <div class="stat-card">
-                        <h3>Confiança Média</h3>
+                        <h3>Average Confidence</h3>
                         <div class="stat-value">{avg_confidence:.2%}</div>
-                        <div class="stat-percent">dos resultados</div>
+                        <div class="stat-percent">of results</div>
                     </div>
                 </div>
             </section>
             
-            <!-- Gráfico de Taxa de Confirmação por Padrão -->
+            <!-- Confirmation Rate Chart by Pattern -->
             <section class="section">
-                <h2>🎯 Taxa de Confirmação por Padrão</h2>
+                <h2>🎯 Confirmation Rate by Pattern</h2>
                 <div class="chart-container">
                     <canvas id="patternChart"></canvas>
                 </div>
                 <table>
                     <tr>
-                        <th>Padrão</th>
+                        <th>Pattern</th>
                         <th>Total</th>
-                        <th>Confirmados</th>
-                        <th>Taxa</th>
-                        <th>Score Médio</th>
+                        <th>Confirmed</th>
+                        <th>Rate</th>
+                        <th>Avg Score</th>
                     </tr>
 """
     
@@ -307,9 +307,9 @@ def generate_html_report():
                 </table>
             </section>
             
-            <!-- Distribuição de Confiança -->
+            <!-- Confidence Distribution -->
             <section class="section">
-                <h2>📊 Distribuição de Confiança</h2>
+                <h2>📊 Confidence Distribution</h2>
                 <div class="chart-container">
                     <canvas id="confidenceChart"></canvas>
                 </div>
@@ -338,13 +338,13 @@ def generate_html_report():
             
             <!-- Top 10 Bugs -->
             <section class="section">
-                <h2>⭐ Top 10 Bugs Mais Confiáveis</h2>
+                <h2>⭐ Top 10 Most Reliable Bugs</h2>
                 <table>
                     <tr>
-                        <th>Padrão</th>
-                        <th>Classe</th>
-                        <th>Método</th>
-                        <th>Confiança</th>
+                        <th>Pattern</th>
+                        <th>Class</th>
+                        <th>Method</th>
+                        <th>Confidence</th>
                         <th>Status</th>
                     </tr>
 """
@@ -362,7 +362,7 @@ def generate_html_report():
         conf = result.get('llm_classification', {}).get('confianca', 0)
         is_bug = result.get('llm_classification', {}).get('eh_realmente_bug', False)
         badge_class = "badge-success" if is_bug else "badge-danger"
-        status = "BUG" if is_bug else "NÃO É BUG"
+        status = "BUG" if is_bug else "NOT A BUG"
         
         html += f"""
                     <tr>
@@ -380,13 +380,13 @@ def generate_html_report():
         </div>
         
         <footer>
-            <p>Relatório gerado automaticamente em {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}</p>
-            <p>Análise de bugs em Java com LLaMA 2 e similaridade estrutural</p>
+            <p>Report generated automatically at {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}</p>
+            <p>Bug analysis in Java with LLaMA 2 and structural similarity</p>
         </footer>
     </div>
     
     <script>
-        // Gráfico de padrões
+        // Pattern chart
         const patternCtx = document.getElementById('patternChart').getContext('2d');
         const patternChart = new Chart(patternCtx, {{
             type: 'bar',
@@ -394,12 +394,12 @@ def generate_html_report():
                 labels: {json.dumps([p for p in sorted(patterns_stats.keys())])},
                 datasets: [
                     {{
-                        label: 'Confirmados',
+                        label: 'Confirmed',
                         data: {json.dumps([patterns_stats[p]['verified'] for p in sorted(patterns_stats.keys())])},
                         backgroundColor: '#667eea'
                     }},
                     {{
-                        label: 'Não Confirmados',
+                        label: 'Not Confirmed',
                         data: {json.dumps([patterns_stats[p]['total'] - patterns_stats[p]['verified'] for p in sorted(patterns_stats.keys())])},
                         backgroundColor: '#e9ecef'
                     }}
@@ -422,7 +422,7 @@ def generate_html_report():
             }}
         }});
         
-        // Gráfico de confiança
+        // Confidence chart
         const confidenceCtx = document.getElementById('confidenceChart').getContext('2d');
         const confidenceChart = new Chart(confidenceCtx, {{
             type: 'doughnut',
@@ -454,11 +454,11 @@ def generate_html_report():
 </html>
 """
     
-    # Salvar arquivo
-    with open('outputs/relatorio_visual.html', 'w', encoding='utf-8') as f:
+    # Save file
+    with open('outputs/report_visual.html', 'w', encoding='utf-8') as f:
         f.write(html)
     
-    print("[OK] Relatório HTML gerado: outputs/relatorio_visual.html")
+    print("[OK] HTML report generated: outputs/report_visual.html")
 
 if __name__ == '__main__':
     generate_html_report()

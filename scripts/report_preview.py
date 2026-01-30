@@ -1,102 +1,102 @@
 """
-Cria um relatório de exemplo mostrando o que será gerado
+Creates an example report showing what will be generated
 """
 
 print("""
 ╔════════════════════════════════════════════════════════════════════════════════╗
-║                RELATÓRIO DE DETECÇÃO DE BUGS - LLaMA 2                        ║
+║                BUG DETECTION REPORT - LLaMA 2                                 ║
 ║                                                                                ║
-║  Status: ⏳ Processando... (Classificação em andamento)                        ║
+║  Status: ⏳ Processing... (Classification in progress)                         ║
 ╚════════════════════════════════════════════════════════════════════════════════╝
 
-📊 RESUMO EXECUTIVO
+📊 EXECUTIVE SUMMARY
 ───────────────────────────────────────────────────────────────────────────────
 
-Total de métodos analisados:        9.683
-Bugs detectados (similaridade):     50 (0,5%)
-Padrões detectados:                 3
-  • Resource Leak:                  23 bugs (46%)
-  • Missing Null Check:             26 bugs (52%)
-  • Null Dereference:               1 bug (2%)
+Total methods analyzed:         9.683
+Bugs detected (similarity):     50 (0,5%)
+Patterns detected:              3
+  • Resource Leak:              23 bugs (46%)
+  • Missing Null Check:         26 bugs (52%)
+  • Null Dereference:           1 bug (2%)
 
-Confiança média dos resultados:     92,37%
-Taxa de confirmação esperada:       75-90%
+Average confidence of results:  92,37%
+Expected confirmation rate:     75-90%
 
 
-📈 DADOS SENDO COLETADOS
+📈 DATA BEING COLLECTED
 ───────────────────────────────────────────────────────────────────────────────
 
-Cada bug passa por análise com LLaMA 2:
-  ✓ Leitura do código-fonte
-  ✓ Verificação de contexto
-  ✓ Análise de padrão específico
-  ✓ Cálculo de confiança
-  ✓ Explicação do resultado
+Each bug goes through analysis with LLaMA 2:
+  ✓ Source code reading
+  ✓ Context verification
+  ✓ Specific pattern analysis
+  ✓ Confidence calculation
+  ✓ Result explanation
 
-Tempo estimado: ~30-50 minutos (processamento paralelo possível)
+Estimated time: ~30-50 minutes (parallel processing possible)
 
 
-🎯 PADRÕES DE BUG DETECTADOS
+🎯 DETECTED BUG PATTERNS
 ───────────────────────────────────────────────────────────────────────────────
 
 1. RESOURCE LEAK
-   - Descrição: Recurso (stream, conexão) não fechado
-   - Score de similaridade: 0,9205
-   - Bugs encontrados: 23
+   - Description: Resource (stream, connection) not closed
+   - Similarity score: 0,9205
+   - Bugs found: 23
 
 2. MISSING NULL CHECK  
-   - Descrição: Acesso a variável sem verificação de null
-   - Score de similaridade: 0,9151
-   - Bugs encontrados: 26
+   - Description: Variable access without null verification
+   - Similarity score: 0,9151
+   - Bugs found: 26
 
 3. NULL DEREFERENCE
-   - Descrição: Desreferência de ponteiro nulo
-   - Score de similaridade: 0,9200
-   - Bugs encontrados: 1
+   - Description: Null pointer dereference
+   - Similarity score: 0,9200
+   - Bugs found: 1
 
 
-📊 GRÁFICOS E VISUALIZAÇÕES
+📊 CHARTS AND VISUALIZATIONS
 ───────────────────────────────────────────────────────────────────────────────
 
-Ao término, você terá acesso a:
+Upon completion, you will have access to:
 
-  1. Gráfico de Taxa de Confirmação por Padrão
-     └─ Mostra qual padrão tem maior taxa de confirmação
+  1. Confirmation Rate Chart by Pattern
+     └─ Shows which pattern has the highest confirmation rate
 
-  2. Distribuição de Confiança
-     └─ Histograma com buckets de 0-20%, 20-40%, etc.
+  2. Confidence Distribution
+     └─ Histogram with buckets of 0-20%, 20-40%, etc.
 
-  3. Top 10 Bugs Mais Confiáveis
-     └─ Ranking com confiança e status
+  3. Top 10 Most Reliable Bugs
+     └─ Ranking with confidence and status
 
-  4. Análise de Falsos Positivos
-     └─ Bugs descartados pela IA e motivos
+  4. False Positive Analysis
+     └─ Bugs discarded by AI and reasons
 
 
-🗂️ ARQUIVOS DE SAÍDA
+🗂️ OUTPUT FILES
 ───────────────────────────────────────────────────────────────────────────────
 
 ✓ outputs/results_with_llm.json
-  └─ Dados brutos com classificação LLM
+  └─ Raw data with LLM classification
 
-✓ outputs/relatorio_llm.md
-  └─ Relatório em Markdown (fácil leitura)
+✓ outputs/report_llm.md
+  └─ Markdown report (easy to read)
 
-✓ outputs/relatorio_visual.html
-  └─ Relatório visual com gráficos interativos
+✓ outputs/report_visual.html
+  └─ Visual report with interactive charts
 
 ✓ outputs/results.csv
-  └─ Dados em formato tabular
+  └─ Data in tabular format
 
 
-💡 COMO USAR OS RESULTADOS
+💡 HOW TO USE THE RESULTS
 ───────────────────────────────────────────────────────────────────────────────
 
-1. Abra outputs/relatorio_visual.html em seu navegador
-   → Visualize gráficos interativos e estatísticas
+1. Open outputs/report_visual.html in your browser
+   → View interactive charts and statistics
 
-2. Use outputs/relatorio_llm.md para compartilhar
-   → Formato padrão Markdown
+2. Use outputs/report_llm.md to share
+   → Standard Markdown format
    
 3. Importe outputs/results_with_llm.json
    → Para análise programática ou em ferramentas

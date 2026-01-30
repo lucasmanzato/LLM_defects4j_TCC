@@ -1,39 +1,39 @@
 """
-Gera relatório detalhado da classificação com LLaMA
+Generates detailed report of classification with LLaMA
 """
 import json
 from datetime import datetime
 from collections import defaultdict
 
 def generate_report():
-    """Gera relatório dos resultados com classificação LLM."""
+    """Generates report of results with LLM classification."""
     
-    # Carregar resultados
+    # Load results
     try:
         with open('outputs/results_with_llm.json', 'r', encoding='utf-8') as f:
             results = json.load(f)
     except FileNotFoundError:
-        print("[ERRO] Arquivo results_with_llm.json nao encontrado")
-        print("[INFO] Execute classify_with_llama.py primeiro")
+        print("[ERROR] File results_with_llm.json not found")
+        print("[INFO] Execute classify_with_llama.py first")
         return
     
     print("\n" + "="*80)
-    print(" RELATORIO DE DETECCAO DE BUGS - LLAMA 2")
+    print(" BUG DETECTION REPORT - LLAMA 2")
     print("="*80)
     
-    # Estatísticas gerais
+    # General statistics
     total = len(results)
     verified = sum(1 for r in results if r.get('llm_classification', {}).get('eh_realmente_bug'))
     not_verified = total - verified
     
-    print(f"\n1. RESUMO EXECUTIVO")
+    print(f"\n1. EXECUTIVE SUMMARY")
     print("-" * 80)
-    print(f"Data/Hora: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
-    print(f"Total de bugs analisados: {total}")
-    print(f"Bugs confirmados pela IA: {verified} ({verified/total*100:.1f}%)")
-    print(f"Bugs nao confirmados: {not_verified} ({not_verified/total*100:.1f}%)")
+    print(f"Date/Time: {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}")
+    print(f"Total bugs analyzed: {total}")
+    print(f"Bugs confirmed by AI: {verified} ({verified/total*100:.1f}%)")
+    print(f"Bugs not confirmed: {not_verified} ({not_verified/total*100:.1f}%)")
     
-    # Estatísticas por padrão
+    # Statistics by pattern
     patterns_stats = defaultdict(lambda: {'total': 0, 'verified': 0, 'avg_score': 0, 'scores': []})
     
     for result in results:
@@ -46,14 +46,14 @@ def generate_report():
             patterns_stats[pattern]['verified'] += 1
         patterns_stats[pattern]['scores'].append(score)
     
-    # Calcular média
+    # Calculate average
     for pattern in patterns_stats:
         scores = patterns_stats[pattern]['scores']
         patterns_stats[pattern]['avg_score'] = sum(scores) / len(scores) if scores else 0
     
-    print(f"\n2. ANALISE POR PADRÃO DE BUG")
+    print(f"\n2. ANALYSIS BY BUG PATTERN")
     print("-" * 80)
-    print(f"{'Padrão':<35} {'Total':<8} {'Confirmados':<15} {'Taxa':<10} {'Score Médio':<12}")
+    print(f"{'Pattern':<35} {'Total':<8} {'Confirmed':<15} {'Rate':<10} {'Avg Score':<12}")
     print("-" * 80)
     
     for pattern in sorted(patterns_stats.keys()):
@@ -65,8 +65,8 @@ def generate_report():
         
         print(f"{pattern:<35} {total_p:<8} {verified_p:<15} {taxa:>6.1f}%    {avg_score:>6.4f}")
     
-    # Top 10 bugs mais confiáveis
-    print(f"\n3. TOP 10 BUGS MAIS CONFIÁVEIS")
+    # Top 10 most reliable bugs
+    print(f"\n3. TOP 10 MOST RELIABLE BUGS")
     print("-" * 80)
     
     sorted_results = sorted(
@@ -78,7 +78,7 @@ def generate_report():
         reverse=True
     )
     
-    print(f"{'#':<4} {'Padrão':<25} {'Classe':<30} {'Confiança':<12} {'Score':<10}")
+    print(f"{'#':<4} {'Pattern':<25} {'Class':<30} {'Confidence':<12} {'Score':<10}")
     print("-" * 80)
     
     for idx, result in enumerate(sorted_results[:10], 1):
@@ -89,12 +89,12 @@ def generate_report():
         
         print(f"{idx:<4} {pattern:<25} {classname:<30} {conf:>6.2%}      {score:>6.4f}")
     
-    # Bugs não confirmados
+    # Bugs not confirmed
     not_confirmed = [r for r in results if not r.get('llm_classification', {}).get('eh_realmente_bug')]
     
-    print(f"\n4. BUGS NÃO CONFIRMADOS PELA IA ({len(not_confirmed)} casos)")
+    print(f"\n4. BUGS NOT CONFIRMED BY AI ({len(not_confirmed)} cases)")
     print("-" * 80)
-    print(f"{'#':<4} {'Padrão':<25} {'Classe':<30} {'Motivo':<20}")
+    print(f"{'#':<4} {'Pattern':<25} {'Class':<30} {'Reason':<20}")
     print("-" * 80)
     
     for idx, result in enumerate(not_confirmed[:5], 1):
@@ -105,10 +105,10 @@ def generate_report():
         print(f"{idx:<4} {pattern:<25} {classname:<30} {motivo:<20}")
     
     if len(not_confirmed) > 5:
-        print(f"... e mais {len(not_confirmed) - 5} bugs não confirmados")
+        print(f"... and {len(not_confirmed) - 5} more unconfirmed bugs")
     
-    # Distribuição de confiança
-    print(f"\n5. DISTRIBUIÇÃO DE CONFIANÇA")
+    # Confidence distribution
+    print(f"\n5. CONFIDENCE DISTRIBUTION")
     print("-" * 80)
     
     confidence_buckets = {
@@ -137,55 +137,55 @@ def generate_report():
         bar = '█' * int(percentage / 2)
         print(f"{bucket}: {bar:<50} {count:>3} ({percentage:>5.1f}%)")
     
-    # Recomendações
-    print(f"\n6. RECOMENDAÇÕES")
+    # Recommendations
+    print(f"\n6. RECOMMENDATIONS")
     print("-" * 80)
     
     if verified / total > 0.8:
-        print("✓ Excelente taxa de confirmação (>80%)")
-        print("  - Os bugs detectados são altamente confiáveis")
+        print("✓ Excellent confirmation rate (>80%)")
+        print("  - Detected bugs are highly reliable")
     elif verified / total > 0.6:
-        print("~ Boa taxa de confirmação (60-80%)")
-        print("  - Revisar os bugs não confirmados")
+        print("~ Good confirmation rate (60-80%)")
+        print("  - Review unconfirmed bugs")
     else:
-        print("! Taxa baixa de confirmação (<60%)")
-        print("  - Ajustar threshold de similaridade")
-        print("  - Revisar padrões com baixa taxa")
+        print("! Low confirmation rate (<60%)")
+        print("  - Adjust similarity threshold")
+        print("  - Review patterns with low rate")
     
-    # Salvar relatório em arquivo
+    # Save report to file
     report_text = generate_report_text(results, patterns_stats, confidence_buckets)
     
-    with open('outputs/relatorio_llm.md', 'w', encoding='utf-8') as f:
+    with open('outputs/report_llm.md', 'w', encoding='utf-8') as f:
         f.write(report_text)
     
     print(f"\n{'='*80}")
-    print("[OK] Relatório salvo em: outputs/relatorio_llm.md")
+    print("[OK] Report saved to: outputs/report_llm.md")
     print(f"{'='*80}\n")
 
 def generate_report_text(results, patterns_stats, confidence_buckets):
-    """Gera texto completo do relatório em Markdown."""
+    """Generates complete markdown report text."""
     
     total = len(results)
     verified = sum(1 for r in results if r.get('llm_classification', {}).get('eh_realmente_bug'))
     not_verified = total - verified
     
-    report = f"""# RELATÓRIO DE DETECÇÃO DE BUGS COM LLAMA 2
+    report = f"""# BUG DETECTION REPORT WITH LLAMA 2
 
-## Data e Hora
+## Date and Time
 {datetime.now().strftime('%d de %B de %Y às %H:%M:%S')}
 
-## Resumo Executivo
+## Executive Summary
 
-| Métrica | Valor |
-|---------|-------|
-| Total de bugs analisados | {total} |
-| Bugs confirmados pela IA | {verified} ({verified/total*100:.1f}%) |
-| Bugs não confirmados | {not_verified} ({not_verified/total*100:.1f}%) |
-| Taxa de confirmação | {verified/total*100:.1f}% |
+| Metric | Value |
+|--------|-------|
+| Total bugs analyzed | {total} |
+| Bugs confirmed by AI | {verified} ({verified/total*100:.1f}%) |
+| Unconfirmed bugs | {not_verified} ({not_verified/total*100:.1f}%) |
+| Confirmation rate | {verified/total*100:.1f}% |
 
-## Análise por Padrão de Bug
+## Analysis by Bug Pattern
 
-| Padrão | Total | Confirmados | Taxa | Score Médio |
+| Pattern | Total | Confirmed | Rate | Avg Score |
 |--------|-------|-------------|------|-------------|
 """
     
@@ -199,7 +199,7 @@ def generate_report_text(results, patterns_stats, confidence_buckets):
         report += f"| {pattern} | {total_p} | {verified_p} | {taxa:.1f}% | {avg_score:.4f} |\n"
     
     # Top 10 bugs
-    report += "\n## Top 10 Bugs Mais Confiáveis\n\n"
+    report += "\n## Top 10 Most Reliable Bugs\n\n"
     
     sorted_results = sorted(
         results,
@@ -215,34 +215,34 @@ def generate_report_text(results, patterns_stats, confidence_buckets):
         motivo = result.get('llm_classification', {}).get('motivo', 'N/A')
         
         report += f"""### {idx}. {pattern}
-- **Classe**: {classname}
-- **Método**: {method}
-- **Confiança**: {conf:.2%}
-- **Motivo**: {motivo}
+- **Class**: {classname}
+- **Method**: {method}
+- **Confidence**: {conf:.2%}
+- **Reason**: {motivo}
 
 """
     
-    # Distribuição de confiança
-    report += "\n## Distribuição de Confiança\n\n"
+    # Confidence distribution
+    report += "\n## Confidence Distribution\n\n"
     
     for bucket, count in sorted(confidence_buckets.items()):
         percentage = count / total * 100
         report += f"- **{bucket}**: {count} bugs ({percentage:.1f}%)\n"
     
-    # Conclusões
-    report += "\n## Conclusões\n\n"
+    # Conclusions
+    report += "\n## Conclusions\n\n"
     
     if verified / total > 0.8:
-        report += "✓ **Excelente**: Taxa de confirmação acima de 80%\n\n"
-        report += "Os bugs detectados são altamente confiáveis. Recomenda-se investir em correção.\n"
+        report += "✓ **Excellent**: Confirmation rate above 80%\n\n"
+        report += "Detected bugs are highly reliable. Recommend investing in fixes.\n"
     elif verified / total > 0.6:
-        report += "~ **Bom**: Taxa de confirmação entre 60-80%\n\n"
-        report += "A maioria dos bugs foi confirmada. Revisar os casos não confirmados.\n"
+        report += "~ **Good**: Confirmation rate between 60-80%\n\n"
+        report += "Most bugs were confirmed. Review unconfirmed cases.\n"
     else:
-        report += "! **Revisar**: Taxa de confirmação abaixo de 60%\n\n"
-        report += "Considere ajustar os thresholds ou padrões de detecção.\n"
+        report += "! **Review**: Confirmation rate below 60%\n\n"
+        report += "Consider adjusting thresholds or detection patterns.\n"
     
-    report += f"\n---\n*Relatório gerado em {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}*\n"
+    report += f"\n---\n*Report generated at {datetime.now().strftime('%d/%m/%Y %H:%M:%S')}*\n"
     
     return report
 

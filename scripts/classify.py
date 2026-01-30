@@ -1,6 +1,6 @@
 """
-Script para classificar bugs detectados usando LLaMA via Ollama.
-Processa os 50 bugs encontrados e adiciona classificação da IA.
+Script to classify detected bugs using LLaMA via Ollama.
+Processes the 50 bugs found and adds AI classification.
 """
 import os
 import json
@@ -11,27 +11,27 @@ os.environ['OLLAMA_HOST'] = 'http://localhost:11434'
 try:
     import ollama
 except ImportError:
-    print("[ERRO] Biblioteca ollama nao instalada. Execute: pip install ollama")
+    print("[ERROR] ollama library not installed. Execute: pip install ollama")
     sys.exit(1)
 
 
 def classify_bug_with_llama(snippet: str, pattern_name: str, class_name: str) -> dict:
-    """Classifica um bug detectado usando LLaMA."""
+    """Classifies a detected bug using LLaMA."""
     try:
-        prompt = f"""Voce eh um especialista em detectar bugs em Java. Analise este codigo da classe {class_name} e confirme se realmente contem o bug "{pattern_name}".
+        prompt = f"""You are an expert at detecting bugs in Java. Analyze this code from class {class_name} and confirm if it really contains the bug "{pattern_name}".
 
-Codigo:
+Code:
 ```java
 {snippet[:300]}
 ```
 
-Padrao procurado: {pattern_name}
+Pattern searched: {pattern_name}
 
-Responda APENAS em JSON:
+Respond ONLY in JSON:
 {{
-    "eh_bug_real": true ou false,
-    "confianca": numero entre 0.0 e 1.0,
-    "motivo": explicacao breve
+    "is_real_bug": true or false,
+    "confidence": number between 0.0 and 1.0,
+    "reason": brief explanation
 }}"""
         
         response = ollama.generate(
@@ -39,55 +39,55 @@ Responda APENAS em JSON:
             prompt=prompt,
             stream=False,
             options={
-                'num_predict': 200,  # Limite de tokens para resposta rápida
-                'temperature': 0.3   # Menos criatividade, mais determinístico
+                'num_predict': 200,  # Token limit for fast response
+                'temperature': 0.3   # Less creativity, more deterministic
             }
         )
         
         text = response.get('response', '').strip()
         
-        # Remover markdown code blocks se houver
+        # Remove markdown code blocks if present
         if '```json' in text:
             text = text.split('```json')[1].split('```')[0].strip()
         elif '```' in text:
             text = text.split('```')[1].split('```')[0].strip()
         
-        # Tentar extrair JSON
+        # Try to extract JSON
         import json
         import re
         
-        # Procurar por JSON entre chaves
+        # Search for JSON between braces
         json_match = re.search(r'\{.*\}', text, re.DOTALL)
         if json_match:
             json_str = json_match.group(0)
             try:
                 result = json.loads(json_str)
-                # Validar estrutura
-                if 'eh_bug_real' in result and 'confianca' in result and 'motivo' in result:
-                    # Corrigir nomes de chaves
+                # Validate structure
+                if 'is_real_bug' in result and 'confidence' in result and 'reason' in result:
+                    # Map field names
                     return {
-                        'eh_bug_real': result.get('eh_bug_real', False),
-                        'confianca': float(result.get('confianca', 0)),
-                        'motivo': str(result.get('motivo', 'N/A'))
+                        'eh_bug_real': result.get('is_real_bug', False),
+                        'confianca': float(result.get('confidence', 0)),
+                        'motivo': str(result.get('reason', 'N/A'))
                     }
             except:
                 pass
         
-        # Se não conseguir parsear perfeitamente, tentar extrair informações
-        is_bug = 'sim' in text.lower() or 'true' in text.lower() or 'bug' in text.lower()
+        # If unable to parse perfectly, try to extract information
+        is_bug = 'yes' in text.lower() or 'true' in text.lower() or 'bug' in text.lower()
         
-        # Tentar extrair confiança (buscar números)
-        conf_match = re.search(r'(\d+\.?\d*)\s*(?:%|confiança|confidence)', text.lower())
+        # Try to extract confidence (search for numbers)
+        conf_match = re.search(r'(\d+\.?\d*)\s*(?:%|confidence)', text.lower())
         confidence = float(conf_match.group(1)) / 100 if conf_match else 0.5
         
         return {
             'eh_bug_real': is_bug,
             'confianca': min(1.0, max(0.0, confidence)),
-            'motivo': text[:100] if text else 'Resposta do LLaMA'
+            'motivo': text[:100] if text else 'LLaMA response'
         }
             
     except Exception as e:
-        print(f"[ERRO] Classificacao: {e}")
+        print(f"[ERROR] Classification: {e}")
         return None
 
 
@@ -95,21 +95,21 @@ def main():
     results_path = 'outputs/results.json'
     
     if not os.path.exists(results_path):
-        print(f"[ERRO] Arquivo {results_path} nao encontrado")
+        print(f"[ERROR] File {results_path} not found")
         return
     
     print("\n" + "="*60)
-    print(" CLASSIFICACAO COM LLAMA")
+    print(" CLASSIFICATION WITH LLAMA")
     print("="*60)
     
-    # Carregar resultados
+    # Load results
     with open(results_path, 'r', encoding='utf-8') as f:
         results = json.load(f)
     
-    print(f"\n[INFO] Carregados {len(results)} bugs")
-    print("[INFO] Classificando com LLaMA... (pode demorar ~30-50 minutos)")
+    print(f"\n[INFO] Loaded {len(results)} bugs")
+    print("[INFO] Classifying with LLaMA... (may take ~30-50 minutes)")
     
-    # Classificar cada bug
+    # Classify each bug
     for idx, result in enumerate(results, 1):
         snippet = result.get('snippet', '')
         pattern = result.get('match', {}).get('pattern_name', '')
@@ -125,28 +125,28 @@ def main():
                 is_real = classification.get('eh_bug_real', False)
                 confidence = classification.get('confianca', 0)
                 
-                status = "BUG CONFIRMADO" if is_real else "NAO EH BUG"
+                status = "BUG CONFIRMED" if is_real else "NOT A BUG"
                 print(f"[{status}] (conf: {confidence:.2f})")
             else:
                 result['llm_classification'] = None
-                print("[ERRO]")
+                print("[ERROR]")
     
-    # Salvar resultados atualizados
+    # Save updated results
     output_path = 'outputs/results_with_llm.json'
     with open(output_path, 'w', encoding='utf-8') as f:
         json.dump(results, f, indent=2, ensure_ascii=False)
     
     print("\n" + "="*60)
-    print(f"[OK] Resultados salvos em: {output_path}")
+    print(f"[OK] Results saved to: {output_path}")
     print("="*60 + "\n")
     
-    # Gerar relatório
-    print("[INFO] Gerando relatório...")
+    # Generate report
+    print("[INFO] Generating report...")
     try:
-        from generate_report import generate_report
+        from report_markdown import generate_report
         generate_report()
     except ImportError:
-        print("[AVISO] Nao conseguiu gerar relatório. Execute: python generate_report.py")
+        print("[WARNING] Could not generate report. Execute: python report_markdown.py")
 
 
 if __name__ == '__main__':

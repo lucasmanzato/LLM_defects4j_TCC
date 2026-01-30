@@ -1,5 +1,5 @@
 """
-Script para monitorar e mostrar progresso da classificação com relatório em tempo real
+Script to monitor and display classification progress with real-time report
 """
 import json
 import time
@@ -7,31 +7,31 @@ import os
 from datetime import datetime
 
 def monitor_classification():
-    """Monitora o progresso da classificação com estatísticas em tempo real."""
+    """Monitors classification progress with real-time statistics."""
     
     results_path = 'outputs/results_with_llm.json'
     last_count = 0
     
     print("\n" + "="*80)
-    print(" MONITORAMENTO DE CLASSIFICAÇÃO COM LLAMA 2")
+    print(" LLAMA 2 CLASSIFICATION MONITORING")
     print("="*80 + "\n")
     
     while True:
         try:
             if not os.path.exists(results_path):
-                print("[AGUARDANDO] Arquivo de resultados ainda não gerado...")
+                print("[WAITING] Results file not yet created...")
                 time.sleep(5)
                 continue
             
             with open(results_path, 'r', encoding='utf-8') as f:
                 results = json.load(f)
             
-            # Contar classificações completas
+            # Count completed classifications
             classified = sum(1 for r in results if r.get('llm_classification') and 
                            r.get('llm_classification', {}).get('confianca') != 0)
             total = len(results)
             
-            # Mostrar progresso se houver mudança
+            # Show progress if there are changes
             if classified != last_count:
                 percentage = classified / total * 100
                 bar_length = 50
@@ -40,52 +40,52 @@ def monitor_classification():
                 
                 print(f"\r[{bar}] {classified}/{total} ({percentage:5.1f}%)", end="", flush=True)
                 
-                # A cada 5 bugs, mostrar estatísticas
+                # Every 5 bugs, show statistics
                 if classified % 5 == 0:
-                    print(f"\n  Tempo decorrido: ~{classified * 0.8:.0f}s (estimado)")
+                    print(f"\n  Elapsed time: ~{classified * 0.8:.0f}s (estimated)")
                     
-                    # Estatísticas parciais
+                    # Partial statistics
                     confirmed = sum(1 for r in results[:classified] 
                                   if r.get('llm_classification', {}).get('eh_bug_real'))
                     if classified > 0:
-                        print(f"  Bugs confirmados até agora: {confirmed}/{classified} ({confirmed/classified*100:.0f}%)")
+                        print(f"  Confirmed bugs so far: {confirmed}/{classified} ({confirmed/classified*100:.0f}%)")
                 
                 last_count = classified
             
-            # Se terminou
+            # If finished
             if classified == total:
-                print(f"\n\n[CONCLUIDO] Classificação finalizada em {datetime.now().strftime('%H:%M:%S')}")
+                print(f"\n\n[COMPLETE] Classification finished at {datetime.now().strftime('%H:%M:%S')}")
                 break
             
             time.sleep(2)
             
         except json.JSONDecodeError:
-            print("[AGUARDANDO] Arquivo sendo escrito...")
+            print("[WAITING] File is being written...")
             time.sleep(5)
         except KeyboardInterrupt:
-            print("\n[CANCELADO] Monitoramento interrompido pelo usuário")
+            print("\n[CANCELLED] Monitoring interrupted by user")
             break
         except Exception as e:
-            print(f"[ERRO] {e}")
+            print(f"[ERROR] {e}")
             time.sleep(5)
 
 def show_live_stats():
-    """Mostra estatísticas do arquivo JSON conforme é atualizado."""
+    """Shows statistics of JSON file as it is updated."""
     
     results_path = 'outputs/results_with_llm.json'
     
     print("\n" + "="*80)
-    print(" ESTATÍSTICAS EM TEMPO REAL")
+    print(" REAL-TIME STATISTICS")
     print("="*80 + "\n")
     
-    time.sleep(30)  # Aguardar um pouco de processamento
+    time.sleep(30)  # Wait a bit for processing
     
     while True:
         try:
             with open(results_path, 'r', encoding='utf-8') as f:
                 results = json.load(f)
             
-            # Contar
+            # Count
             classified = sum(1 for r in results if r.get('llm_classification', {}).get('motivo', '').lower() != 'erro ao parsear resposta')
             confirmed = sum(1 for r in results if r.get('llm_classification', {}).get('eh_bug_real'))
             
@@ -100,10 +100,10 @@ def show_live_stats():
                     if is_bug:
                         patterns_stats[pattern]['confirmed'] += 1
                 
-                print(f"\nDados processados até agora: {classified}/{len(results)}")
-                print(f"Taxa de confirmação: {confirmed}/{classified} ({confirmed/classified*100:.1f}%)\n")
+                print(f"\nProcessed data so far: {classified}/{len(results)}")
+                print(f"Confirmation rate: {confirmed}/{classified} ({confirmed/classified*100:.1f}%)\n")
                 
-                print(f"{'Padrão':<25} {'Confirmados':<15} {'Taxa':<10}")
+                print(f"{'Pattern':<25} {'Confirmed':<15} {'Rate':<10}")
                 print("-" * 50)
                 
                 for pattern in sorted(patterns_stats.keys()):
