@@ -6,24 +6,33 @@ Sistema de detecção de bugs baseado em padrões do Defects4J usando matching p
 
 ```
 LLM_defects4j_TCC/
-├── src/                      # Código fonte
-│   ├── extractors/           # Extração de código e features
-│   │   ├── java_parser.py    # Parser de métodos Java
-│   │   └── feature_extractor.py  # Extração de features estruturais
-│   ├── matchers/             # Lógica de matching
-│   │   ├── pattern_library.py    # Biblioteca de padrões Defects4J
-│   │   ├── signature_generator.py # Gerador de assinaturas
-│   │   └── similarity_matcher.py  # Matcher por similaridade
-│   ├── pipelines/            # Pipelines de execução
-│   │   └── detection_pipeline.py  # Pipeline completo
-│   └── utils/                # Utilitários
-│       └── repo_cloner.py    # Clonagem de repositórios
-├── dados/                    # Repositórios clonados
-├── outputs/                  # Resultados da análise
-├── docs/                     # Documentação adicional
-├── main.py                   # Ponto de entrada principal
-├── requirements.txt          # Dependências Python
-└── .env                      # Configurações
+├── scripts/                  # Scripts principais
+│   ├── README.md            # Guia de scripts
+│   ├── pipeline.py          # Detecção de bugs
+│   ├── classify.py          # Classificação com LLaMA
+│   ├── report_*.py          # Geração de relatórios
+│   ├── monitor.py           # Monitoramento
+│   └── run_all.py           # Orquestração
+│
+├── src/                     # Código modular
+│   ├── extractors/          # Extração de features
+│   ├── matchers/            # Matching por similaridade
+│   ├── pipelines/           # Pipeline principal
+│   ├── llm/                 # Integração com LLaMA
+│   └── utils/               # Utilitários
+│
+├── docs/                    # Documentação
+│   ├── README.md            # Índice de docs
+│   ├── RELATORIO_GUIA.md    # Guia de relatórios
+│   ├── ARQUITETURA_SIMILARIDADE.md
+│   ├── OLLAMA_SETUP.md
+│   └── REFACTORING.md
+│
+├── README.md                # Este arquivo
+├── LIMPEZA.md               # Documentação de limpeza
+├── requirements.txt         # Dependências
+├── .env                     # Configurações
+└── .gitignore               # Git ignore
 ```
 
 ## 🚀 Início Rápido
@@ -31,13 +40,12 @@ LLM_defects4j_TCC/
 ### 1. Instalação
 
 ```bash
-# Instalar dependências
 pip install -r requirements.txt
 ```
 
 ### 2. Configuração
 
-Edite o arquivo `.env`:
+Edite `.env`:
 
 ```env
 REPO_URL=https://github.com/apache/commons-lang.git
@@ -45,12 +53,22 @@ REPO_PATH=dados/commons-lang
 OUTPUT_PATH=outputs/results.json
 SIMILARITY_THRESHOLD=0.3
 TOP_K=50
+OLLAMA_ENABLED=true
+OLLAMA_HOST=http://localhost:11434
+OLLAMA_MODEL=llama2
 ```
 
-### 3. Execução
+### 3. Execução Principal
 
 ```bash
-python main.py
+# Detecção de bugs
+python scripts/pipeline.py
+
+# Classificação com LLaMA
+python scripts/classify.py
+
+# Gerar relatórios automaticamente
+python scripts/wait_report.py
 ```
 
 ## 📊 Como Funciona
@@ -151,8 +169,10 @@ WEIGHTS = {
 
 ## 📚 Documentação Adicional
 
-- [ARQUITETURA_SIMILARIDADE.md](ARQUITETURA_SIMILARIDADE.md): Detalhes técnicos
-- [CHANGELOG.md](CHANGELOG.md): Histórico de versões
+Veja a [documentação completa](docs/) para:
+- [Guia de Relatórios](docs/RELATORIO_GUIA.md): Como usar e interpretar
+- [Arquitetura](docs/ARQUITETURA_SIMILARIDADE.md): Detalhes técnicos
+- [Setup Ollama](docs/OLLAMA_SETUP.md): Configuração de LLaMA
 - [TROUBLESHOOTING.txt](TROUBLESHOOTING.txt): Resolução de problemas
 
 ## 🤝 Contribuindo
