@@ -5,6 +5,12 @@ import json
 from datetime import datetime
 from collections import defaultdict
 
+def _is_confirmed(result: dict) -> bool:
+    """Retorna True se a LLM confirmou o bug, aceitando chaves legadas."""
+    llm = result.get('llm_classification', {}) or {}
+    return bool(llm.get('eh_bug_real', llm.get('eh_realmente_bug', llm.get('is_real_bug', False))))
+
+
 def generate_html_report():
     """Gera relatório em HTML com estatísticas visuais."""
     
@@ -17,7 +23,7 @@ def generate_html_report():
     
     # Coletar estatísticas
     total = len(results)
-    verified = sum(1 for r in results if r.get('llm_classification', {}).get('eh_realmente_bug'))
+    verified = sum(1 for r in results if _is_confirmed(r))
     not_verified = total - verified
     
     # Confiança média
@@ -30,7 +36,7 @@ def generate_html_report():
     
     for result in results:
         pattern = result.get('match', {}).get('pattern_name', 'Unknown')
-        is_verified = result.get('llm_classification', {}).get('eh_realmente_bug', False)
+        is_verified = _is_confirmed(result)
         score = result.get('match', {}).get('score', 0)
         
         patterns_stats[pattern]['total'] += 1
@@ -360,7 +366,7 @@ def generate_html_report():
         classname = result.get('class', '?')
         method = result.get('method', '?')
         conf = result.get('llm_classification', {}).get('confianca', 0)
-        is_bug = result.get('llm_classification', {}).get('eh_realmente_bug', False)
+        is_bug = _is_confirmed(result)
         badge_class = "badge-success" if is_bug else "badge-danger"
         status = "BUG" if is_bug else "NÃO É BUG"
         

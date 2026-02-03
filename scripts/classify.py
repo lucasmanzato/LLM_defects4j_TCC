@@ -14,6 +14,11 @@ except ImportError:
     print("[ERRO] Biblioteca ollama não instalada. Execute: pip install ollama")
     sys.exit(1)
 
+OLLAMA_HOST = os.environ.get('OLLAMA_HOST', 'http://localhost:11434')
+OLLAMA_TIMEOUT = float(os.environ.get('OLLAMA_TIMEOUT', '120'))
+OLLAMA_RETRIES = int(os.environ.get('OLLAMA_RETRIES', '2'))
+client = ollama.Client(host=OLLAMA_HOST, timeout=OLLAMA_TIMEOUT)
+
 
 def classify_bug_with_llama(snippet: str, pattern_name: str, class_name: str) -> dict:
     """Classifica um bug detectado usando LLaMA."""
@@ -34,15 +39,23 @@ Responda APENAS em JSON:
     "reason": breve explicação
 }}"""
         
-        response = ollama.generate(
-            model="llama2",
-            prompt=prompt,
-            stream=False,
-            options={
-                'num_predict': 200,  # Limite de tokens para resposta rápida
-                'temperature': 0.3   # Menos criatividade, mais determinístico
-            }
-        )
+        response = None
+        for attempt in range(1, OLLAMA_RETRIES + 1):
+            try:
+                response = client.generate(
+                    model="llama2",
+                    prompt=prompt,
+                    stream=False,
+                    options={
+                        'num_predict': 200,  # Limite de tokens para resposta rápida
+                        'temperature': 0.3   # Menos criatividade, mais determinístico
+                    }
+                )
+                break
+            except Exception as e:
+                print(f"[ERRO] Falha na requisição (tentativa {attempt}/{OLLAMA_RETRIES}): {e}")
+                if attempt == OLLAMA_RETRIES:
+                    return None
         
         text = response.get('response', '').strip()
         
@@ -86,6 +99,9 @@ Responda APENAS em JSON:
             'motivo': text[:100] if text else 'Resposta LLaMA'
         }
             
+    except KeyboardInterrupt:
+        print("[ERRO] Classificação interrompida durante a requisição")
+        return None
     except Exception as e:
         print(f"[ERRO] Classificação: {e}")
         return None

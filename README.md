@@ -11,8 +11,7 @@ LLM_defects4j_TCC/
 │   ├── pipeline.py          # Detecção de bugs
 │   ├── classify.py          # Classificação com LLaMA
 │   ├── report_*.py          # Geração de relatórios
-│   ├── monitor.py           # Monitoramento
-│   └── run_all.py           # Orquestração
+│   └── monitor.py           # Monitoramento
 │
 ├── src/                     # Código modular
 │   ├── extractors/          # Extração de features
@@ -23,13 +22,10 @@ LLM_defects4j_TCC/
 │
 ├── docs/                    # Documentação
 │   ├── README.md            # Índice de docs
-│   ├── RELATORIO_GUIA.md    # Guia de relatórios
 │   ├── ARQUITETURA_SIMILARIDADE.md
-│   ├── OLLAMA_SETUP.md
-│   └── REFACTORING.md
+│   └── OLLAMA_SETUP.md
 │
 ├── README.md                # Este arquivo
-├── LIMPEZA.md               # Documentação de limpeza
 ├── requirements.txt         # Dependências
 ├── .env                     # Configurações
 └── .gitignore               # Git ignore
@@ -67,8 +63,8 @@ python scripts/pipeline.py
 # Classificação com LLaMA
 python scripts/classify.py
 
-# Gerar relatórios automaticamente
-python scripts/wait_report.py
+# Gerar relatórios
+python scripts/report_markdown.py
 ```
 
 ## 📊 Como Funciona

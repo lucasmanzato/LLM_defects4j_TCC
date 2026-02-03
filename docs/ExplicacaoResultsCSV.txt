@@ -1,0 +1,323 @@
+================================================================================
+EXPLICAÇÃO DETALHADA DO ARQUIVO results.csv
+================================================================================
+
+Este arquivo contém os mesmos 50 bugs do results.json, mas em formato CSV 
+(Comma-Separated Values) para fácil importação em Excel, Google Sheets, 
+ou ferramentas de análise de dados.
+
+É a versão TABULAR dos resultados, SEM a classificação da IA (apenas detecção).
+
+================================================================================
+FORMATO E ESTRUTURA
+================================================================================
+
+Formato: CSV (valores separados por vírgula)
+Linhas: 51 (1 cabeçalho + 50 resultados)
+Encoding: UTF-8
+Separador: vírgula (,)
+
+================================================================================
+COLUNAS DO ARQUIVO (14 campos)
+================================================================================
+
+1. rank
+   → Posição no ranking (1 a 50)
+   → Ordenado por similarity_score (maior primeiro)
+   
+2. file
+   → Caminho completo do arquivo .java
+   → Exemplo: dados\defects4j\framework\test\...\ValidTestClass.java
+   
+3. class
+   → Nome da classe onde o bug está
+   → Pode estar vazio se não foi detectado pelo parser
+   → Exemplo: ValidTestClass, Formatter, PackageVersion
+   
+4. method
+   → Nome do método com o bug
+   → Pode estar vazio (coluna vazia no CSV)
+   → Exemplo: test0, startTest, version
+   
+5. pattern_id
+   → ID técnico do padrão detectado
+   → Valores: resource-leak, null-dereference, boundary-error, etc.
+   
+6. pattern_name
+   → Nome legível do padrão
+   → Exemplo: "Resource Leak", "Missing Null Check"
+   
+7. similarity_score
+   → Pontuação total de similaridade (0.0 a 1.0)
+   → Quanto maior, mais similar ao padrão
+   → Exemplo: 0.9200 = 92% similar
+   
+8. confidence
+   → Confiança na detecção (0.0 a 1.0)
+   → Calculado a partir do score e outros fatores
+   → Exemplo: 0.9360 = 93.6% de confiança
+   
+9. ast_score
+   → Contribuição do AST para o score total
+   → Valor já ponderado (0.0 a 0.35)
+   → Exemplo: 0.3500 = contribuiu 35%
+   
+10. control_flow_score
+    → Contribuição do fluxo de controle
+    → Valor ponderado (0.0 a 0.25)
+    → Exemplo: 0.2500 = contribuiu 25%
+    
+11. methods_score
+    → Contribuição dos métodos chamados
+    → Valor ponderado (0.0 a 0.20)
+    → Exemplo: 0.2000 = contribuiu 20%
+    
+12. operators_score
+    → Contribuição dos operadores
+    → Valor ponderado (0.0 a 0.10)
+    → Exemplo: 0.1000 = contribuiu 10%
+    
+13. tokens_score
+    → Contribuição da sequência de tokens
+    → Valor ponderado (0.0 a 0.10)
+    → Exemplo: 0.0200 = contribuiu 2%
+    
+14. snippet_preview
+    → Prévia do código (primeiros 200 caracteres)
+    → Geralmente vazio no CSV para não quebrar formato
+    → Use results.json para ver o código completo
+
+================================================================================
+OBSERVAÇÕES SOBRE O CONTEÚDO
+================================================================================
+
+NOTA 1: Campos vazios
+---------------------
+- class e method podem estar vazios se o parser Java não conseguiu extrair
+- snippet_preview geralmente está vazio (contém quebras de linha que quebram CSV)
+
+NOTA 2: Verificação do score
+-----------------------------
+O similarity_score é a SOMA dos 5 scores individuais:
+
+Exemplo da linha 1:
+  ast_score:           0.3500
+  control_flow_score:  0.2500
+  methods_score:       0.2000
+  operators_score:     0.1000
+  tokens_score:        0.0200
+  -------------------------
+  similarity_score:    0.9200 ✓
+
+NOTA 3: Padrões detectados
+---------------------------
+Neste arquivo específico:
+- 49 detecções de "Resource Leak"
+- 1 detecção de "Missing Null Check" (rank 6)
+
+NOTA 4: Arquivos repetidos
+---------------------------
+O mesmo arquivo pode aparecer várias vezes se tiver múltiplos métodos
+com bugs detectados.
+
+Exemplo: Formatter.java aparece 7 vezes (ranks 7-13)
+- Cada linha representa um método diferente
+
+================================================================================
+EXEMPLO DE LEITURA: LINHA 1
+================================================================================
+
+rank: 1
+file: dados\defects4j\framework\test\resources\input\foo\bar\UnitTestsWithCompilationIssues.java
+class: (vazio)
+method: (vazio)
+pattern_id: resource-leak
+pattern_name: Resource Leak
+similarity_score: 0.9200
+confidence: 0.9360
+ast_score: 0.3500
+control_flow_score: 0.2500
+methods_score: 0.2000
+operators_score: 0.1000
+tokens_score: 0.0200
+snippet_preview: (vazio)
+
+INTERPRETAÇÃO:
+- Ranqueado em 1º lugar (maior similaridade)
+- Arquivo de teste com problemas de compilação
+- Padrão detectado: Resource Leak (vazamento de recurso)
+- Score: 0.92 (92% similar ao padrão)
+- Confiança: 0.936 (93.6%)
+- Breakdown:
+  * AST perfeito (0.35 de 0.35 possível) = 100%
+  * Control flow perfeito (0.25 de 0.25) = 100%
+  * Methods perfeito (0.20 de 0.20) = 100%
+  * Operators perfeito (0.10 de 0.10) = 100%
+  * Tokens baixo (0.02 de 0.10 possível) = 20%
+
+================================================================================
+EXEMPLO DE LEITURA: LINHA 6
+================================================================================
+
+rank: 6
+file: dados\defects4j\framework\lib\formatter\src\edu\washington\cs\mut\testrunner\Formatter.java
+class: Formatter
+method: (vazio)
+pattern_id: missing-null-check
+pattern_name: Missing Null Check
+similarity_score: 0.8111
+confidence: 0.8489
+ast_score: 0.3500
+control_flow_score: 0.2500
+methods_score: 0.1000
+operators_score: 0.1000
+tokens_score: 0.0111
+snippet_preview: (vazio)
+
+INTERPRETAÇÃO:
+- Ranqueado em 6º lugar
+- Classe: Formatter
+- ÚNICO "Missing Null Check" detectado (todos outros são Resource Leak)
+- Score: 0.8111 (81.11% similar)
+- Confiança: 0.8489 (84.89%)
+- Breakdown:
+  * AST: 100% (0.35/0.35)
+  * Control flow: 100% (0.25/0.25)
+  * Methods: 50% (0.10/0.20) ← metade dos métodos batem
+  * Operators: 100% (0.10/0.10)
+  * Tokens: 11% (0.011/0.10) ← nomes muito diferentes
+
+================================================================================
+COMO USAR ESTE ARQUIVO
+================================================================================
+
+1. ANÁLISE EM EXCEL/GOOGLE SHEETS
+   → Importar como CSV
+   → Filtrar por pattern_name
+   → Ordenar por similarity_score ou confidence
+   → Criar gráficos de distribuição
+
+2. ANÁLISE PROGRAMÁTICA (Python, R, etc.)
+   import pandas as pd
+   df = pd.read_csv('results.csv')
+   
+   # Filtrar bugs com score alto
+   high_priority = df[df['similarity_score'] >= 0.9]
+   
+   # Contar por padrão
+   df['pattern_name'].value_counts()
+   
+   # Agrupar por classe
+   df.groupby('class')['similarity_score'].mean()
+
+3. VISUALIZAÇÃO
+   → Histograma de scores
+   → Gráfico de pizza por pattern_name
+   → Scatter plot: ast_score vs tokens_score
+   → Heatmap de correlações entre scores
+
+4. RELATÓRIOS
+   → Gerar sumário executivo
+   → Listar top 10 classes mais problemáticas
+   → Identificar padrões com baixa diversidade de scores
+
+================================================================================
+DIFERENÇA ENTRE OS ARQUIVOS DE OUTPUT
+================================================================================
+
+results.json
+  ✓ Formato JSON completo
+  ✓ Inclui snippet de código
+  ✓ Inclui all_matches (todos os 6 padrões)
+  ✓ Inclui features detalhadas
+  ✗ Sem classificação IA
+
+results.csv (ESTE ARQUIVO)
+  ✓ Formato tabular (Excel/planilhas)
+  ✓ Fácil de filtrar/ordenar
+  ✓ Scores individuais visíveis
+  ✗ Sem snippet de código
+  ✗ Sem all_matches
+  ✗ Sem classificação IA
+
+results_with_llm.json
+  ✓ Formato JSON completo
+  ✓ Inclui snippet de código
+  ✓ Inclui all_matches
+  ✓ INCLUI classificação IA (eh_bug_real, confianca, motivo)
+  → MAIS COMPLETO
+
+relatorio_llm.md
+  ✓ Relatório legível em Markdown
+  ✓ Estatísticas agregadas
+  ✓ Top bugs destacados
+  ✓ Recomendações
+  → PARA APRESENTAÇÃO
+
+================================================================================
+ESTATÍSTICAS DESTE ARQUIVO ESPECÍFICO
+================================================================================
+
+Total de detecções:           50
+Padrões únicos:               2 (Resource Leak: 49, Missing Null Check: 1)
+
+Faixa de scores:
+  Máximo:                     0.9200 (rank 1-3)
+  Mínimo:                     0.6500 (rank 50)
+  Média:                      ~0.78
+
+Classes mais afetadas:
+  1. PackageVersion:          16 ocorrências
+  2. Formatter:               7 ocorrências
+  3. ValidTestClass:          2 ocorrências
+
+Distribuição de confidence:
+  0.9-1.0 (muito alto):       3 detecções
+  0.8-0.9 (alto):             2 detecções
+  0.7-0.8 (médio):            42 detecções
+  0.6-0.7 (baixo):            3 detecções
+
+Pontuações de breakdown:
+  AST sempre 0.35 (100%):     49/50 casos
+  Control always 0.25 (100%): 49/50 casos
+  Methods variável:           0.10 a 0.20
+  Operators variável:         0.00 a 0.10
+  Tokens variável:            0.00 a 0.02
+
+OBSERVAÇÃO: Muitos scores idênticos indicam padrões repetitivos no código
+(código gerado automaticamente, especialmente PackageVersion.java)
+
+================================================================================
+FLUXO DE GERAÇÃO
+================================================================================
+
+1. pipeline.py executa
+   ↓
+2. Detecta 50 bugs (results.json)
+   ↓
+3. Converte para CSV (results.csv) ← ESTE ARQUIVO
+   ↓
+   Salvo em: outputs/results.csv
+
+Gerado pela função save_results_csv() em:
+→ src/pipelines/detection_pipeline.py (linhas ~195-238)
+
+================================================================================
+RESUMO FINAL
+================================================================================
+
+Este arquivo é a versão TABULAR/PLANILHA dos resultados de detecção:
+- Fácil de abrir em Excel/Google Sheets
+- Bom para análise estatística e visualização
+- NÃO contém classificação da IA (para isso, use results_with_llm.json)
+- NÃO contém código (snippet vazio)
+
+Use para:
+  ✓ Análise exploratória rápida
+  ✓ Criar gráficos e visualizações
+  ✓ Filtrar e ordenar bugs
+  ✓ Exportar para outras ferramentas
+  ✓ Gerar relatórios automatizados
+
+Para análise detalhada com validação da IA:
+  → Use results_with_llm.json ou relatorio_llm.md

@@ -5,6 +5,12 @@ import json
 from datetime import datetime
 from collections import defaultdict
 
+
+def _is_confirmed(result: dict) -> bool:
+    """Retorna True se a LLM confirmou o bug, aceitando chaves legadas."""
+    llm = result.get('llm_classification', {}) or {}
+    return bool(llm.get('eh_bug_real', llm.get('eh_realmente_bug', llm.get('is_real_bug', False))))
+
 def generate_report():
     """Gera relatório dos resultados com classificação LLM."""
     
@@ -23,7 +29,7 @@ def generate_report():
     
     # Estatísticas gerais
     total = len(results)
-    verified = sum(1 for r in results if r.get('llm_classification', {}).get('eh_realmente_bug'))
+    verified = sum(1 for r in results if _is_confirmed(r))
     not_verified = total - verified
     
     print(f"\n1. RESUMO EXECUTIVO")
@@ -38,7 +44,7 @@ def generate_report():
     
     for result in results:
         pattern = result.get('match', {}).get('pattern_name', 'Unknown')
-        is_verified = result.get('llm_classification', {}).get('eh_realmente_bug', False)
+        is_verified = _is_confirmed(result)
         score = result.get('match', {}).get('score', 0)
         
         patterns_stats[pattern]['total'] += 1
@@ -90,7 +96,7 @@ def generate_report():
         print(f"{idx:<4} {pattern:<25} {classname:<30} {conf:>6.2%}      {score:>6.4f}")
     
     # Bugs não confirmados
-    not_confirmed = [r for r in results if not r.get('llm_classification', {}).get('eh_realmente_bug')]
+    not_confirmed = [r for r in results if not _is_confirmed(r)]
     
     print(f"\n4. BUGS NÃO CONFIRMADOS PELA IA ({len(not_confirmed)} casos)")
     print("-" * 80)
@@ -166,7 +172,7 @@ def generate_report_text(results, patterns_stats, confidence_buckets):
     """Gera texto completo do relatório em Markdown."""
     
     total = len(results)
-    verified = sum(1 for r in results if r.get('llm_classification', {}).get('eh_realmente_bug'))
+    verified = sum(1 for r in results if _is_confirmed(r))
     not_verified = total - verified
     
     report = f"""# RELATÓRIO DE DETECÇÃO DE BUGS COM LLAMA 2

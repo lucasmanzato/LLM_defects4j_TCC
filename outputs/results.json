@@ -1,0 +1,2547 @@
+[
+  {
+    "file": "dados\\defects4j\\framework\\test\\resources\\input\\foo\\bar\\UnitTestsWithCompilationIssues.java",
+    "class": null,
+    "method": "test0",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.92,
+      "confidence": 0.9359999999999999,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.1,
+        "tokens": 0.020000000000000004
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.92,
+        "confidence": 0.9359999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.61,
+        "confidence": 0.608
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.6,
+        "confidence": 0.5599999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.6,
+        "confidence": 0.5599999999999999
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.46,
+        "confidence": 0.4880000000000001
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.4474873734152916,
+        "confidence": 0.4379898987322333
+      }
+    ],
+    "snippet": "\n  public void test0() {\n    String str = new String();\n    str = 123456789;\n  }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\test\\resources\\input\\foo\\bar\\ValidTestClass.java",
+    "class": "ValidTestClass",
+    "method": "test0",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.92,
+      "confidence": 0.9359999999999999,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.1,
+        "tokens": 0.020000000000000004
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.92,
+        "confidence": 0.9359999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.61,
+        "confidence": 0.608
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.6,
+        "confidence": 0.5599999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.6,
+        "confidence": 0.5599999999999999
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.46,
+        "confidence": 0.4880000000000001
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.4474873734152916,
+        "confidence": 0.4379898987322333
+      }
+    ],
+    "snippet": "  public void test0() {\n    String str = new String(\"123456789\");\n    assertEquals(\"123456789\", str);\n  }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\test\\resources\\output\\foo\\bar\\ValidTestClass.java",
+    "class": "ValidTestClass",
+    "method": "test0",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.92,
+      "confidence": 0.9359999999999999,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.1,
+        "tokens": 0.020000000000000004
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.92,
+        "confidence": 0.9359999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.61,
+        "confidence": 0.608
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.6,
+        "confidence": 0.5599999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.6,
+        "confidence": 0.5599999999999999
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.46,
+        "confidence": 0.4880000000000001
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.4474873734152916,
+        "confidence": 0.4379898987322333
+      }
+    ],
+    "snippet": "  public void test0() {\n    String str = new String(\"123456789\");\n    assertEquals(\"123456789\", str);\n  }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\test\\resources\\input\\foo\\bar\\LineCommentsWithWhitespaces.java",
+    "class": "LineCommentsWithWhitespaces",
+    "method": "test0",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.9125,
+      "confidence": 0.93,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.1,
+        "tokens": 0.0125
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.9125,
+        "confidence": 0.93
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.6124999999999999,
+        "confidence": 0.61
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.6,
+        "confidence": 0.5599999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.6,
+        "confidence": 0.5599999999999999
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.4625,
+        "confidence": 0.49000000000000005
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.4474873734152916,
+        "confidence": 0.4379898987322333
+      }
+    ],
+    "snippet": "  public void test0() {\n    String str = \"_hello_\";\n    assertEquals(\" title=\\\" title=\\\"\\\" alt=\\\"\\\"\", str); // (Primitive) Original Value:  title=\" title=\"\" alt=\"\" | Regression Value:  title=\" title=&quot;\" alt=\"\"\n  }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\test\\resources\\input\\foo\\bar\\Regex.java",
+    "class": null,
+    "method": "test0",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.9125,
+      "confidence": 0.93,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.1,
+        "tokens": 0.0125
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.9125,
+        "confidence": 0.93
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.6124999999999999,
+        "confidence": 0.61
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.6,
+        "confidence": 0.5599999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.6,
+        "confidence": 0.5599999999999999
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.4625,
+        "confidence": 0.49000000000000005
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.4474873734152916,
+        "confidence": 0.4379898987322333
+      }
+    ],
+    "snippet": "\n  public void test0() {\n    String str = \"\\\\s*(?:'((?:\\\\\\\\'|[^'])*?)'|\\\"((?:\\\\\\\\\\\"|[^\\\"])*?)\\\")\\\\s*\";\n    assertNotNull(str)\n  }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\lib\\formatter\\src\\edu\\washington\\cs\\mut\\testrunner\\Formatter.java",
+    "class": "Formatter",
+    "method": "startTest",
+    "match": {
+      "pattern_id": "missing-null-check",
+      "pattern_name": "Missing Null Check",
+      "score": 0.811111111111111,
+      "confidence": 0.8488888888888887,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.1,
+        "operators": 0.1,
+        "tokens": 0.011111111111111112
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.811111111111111,
+        "confidence": 0.8488888888888887
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.6,
+        "confidence": 0.5599999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.44999999999999996,
+        "confidence": 0.43999999999999995
+      }
+    ],
+    "snippet": "\tpublic void startTest(Test test) {\n\t    allTests.println(test.toString());\n\t}"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\lib\\formatter\\src\\edu\\washington\\cs\\mut\\testrunner\\Formatter.java",
+    "class": "Formatter",
+    "method": "endTestSuite",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.45,
+        "confidence": 0.44000000000000006
+      }
+    ],
+    "snippet": "\tpublic void endTestSuite(JUnitTest arg0) throws BuildException {\n\t}"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\lib\\formatter\\src\\edu\\washington\\cs\\mut\\testrunner\\Formatter.java",
+    "class": "Formatter",
+    "method": "setOutput",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.45,
+        "confidence": 0.44000000000000006
+      }
+    ],
+    "snippet": "\tpublic void setOutput(OutputStream arg0) {\n\t}"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\lib\\formatter\\src\\edu\\washington\\cs\\mut\\testrunner\\Formatter.java",
+    "class": "Formatter",
+    "method": "setSystemError",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.45,
+        "confidence": 0.44000000000000006
+      }
+    ],
+    "snippet": "\tpublic void setSystemError(String arg0) {\n\t}"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\lib\\formatter\\src\\edu\\washington\\cs\\mut\\testrunner\\Formatter.java",
+    "class": "Formatter",
+    "method": "setSystemOutput",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.45,
+        "confidence": 0.44000000000000006
+      }
+    ],
+    "snippet": "\tpublic void setSystemOutput(String arg0) {\n\t}"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\lib\\formatter\\src\\edu\\washington\\cs\\mut\\testrunner\\Formatter.java",
+    "class": "Formatter",
+    "method": "addError",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.45,
+        "confidence": 0.44000000000000006
+      }
+    ],
+    "snippet": "\tpublic void addError(Test test, Throwable t) {\n\t\thandle(test, t);\n\t}"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\lib\\formatter\\src\\edu\\washington\\cs\\mut\\testrunner\\Formatter.java",
+    "class": "Formatter",
+    "method": "addFailure",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.45,
+        "confidence": 0.44000000000000006
+      }
+    ],
+    "snippet": "\tpublic void addFailure(Test test, AssertionFailedError t) {\n\t\thandle(test,t);\n\t}"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\lib\\formatter\\src\\edu\\washington\\cs\\mut\\testrunner\\Formatter.java",
+    "class": "Formatter",
+    "method": "endTest",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.45,
+        "confidence": 0.44000000000000006
+      }
+    ],
+    "snippet": "\tpublic void endTest(Test test) {\n\t}"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\lib\\formatter\\test\\edu\\washington\\cs\\mut\\testrunner\\junit3\\NonJUnitTest.java",
+    "class": "NonJUnitTest",
+    "method": "main",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.45,
+        "confidence": 0.44000000000000006
+      }
+    ],
+    "snippet": "    public static void main(String ... args) {\n\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\lib\\formatter\\test\\edu\\washington\\cs\\mut\\testrunner\\junit3\\NonJUnitTest.java",
+    "class": "NonJUnitTest",
+    "method": "runTest",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.45,
+        "confidence": 0.44000000000000006
+      }
+    ],
+    "snippet": "    public void runTest() {\n\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\lib\\formatter\\test\\edu\\washington\\cs\\mut\\testrunner\\junit4\\MethodTimeout.java",
+    "class": "MethodTimeout",
+    "method": "test1",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.45,
+        "confidence": 0.44000000000000006
+      }
+    ],
+    "snippet": "\t@Test public void test1() {\n\t\t// this passes\n\t}"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\lib\\formatter\\test\\edu\\washington\\cs\\mut\\testrunner\\junit4\\NonJUnitTest.java",
+    "class": "NonJUnitTest",
+    "method": "main",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.45,
+        "confidence": 0.44000000000000006
+      }
+    ],
+    "snippet": "    public static void main(String ... args) {\n\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\lib\\formatter\\test\\edu\\washington\\cs\\mut\\testrunner\\junit4\\NonJUnitTest.java",
+    "class": "NonJUnitTest",
+    "method": "runTest",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.45,
+        "confidence": 0.44000000000000006
+      }
+    ],
+    "snippet": "    public void runTest() {\n\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\lib\\formatter\\test\\edu\\washington\\cs\\mut\\testrunner\\junit4\\ParamTest.java",
+    "class": "ParamTest",
+    "method": "testWithParams",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.45,
+        "confidence": 0.44000000000000006
+      }
+    ],
+    "snippet": "    public void testWithParams() {\n        assertTrue(false);\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.10.0\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.2.0\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.3.0\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.4.1\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.4.5\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.5.0\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.5.1\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.5.5\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.6.0\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.6.1\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.6.2\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.6.3\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.7.0\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.7.2\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.7.4\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.7.7\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.7.8\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.8.0\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.8.12\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.8.3\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.8.8\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.8.9\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.9.0\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.9.0.pr2\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.9.0.pr3\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.9.6\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.9.7\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonCore\\generated_sources\\2.9.9\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonDatabind\\generated_sources\\2.10.0\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonDatabind\\generated_sources\\2.2.2\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  },
+  {
+    "file": "dados\\defects4j\\framework\\projects\\JacksonDatabind\\generated_sources\\2.3.1\\PackageVersion.java",
+    "class": "PackageVersion",
+    "method": "version",
+    "match": {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "score": 0.8,
+      "confidence": 0.76,
+      "breakdown": {
+        "ast": 0.35,
+        "control_flow": 0.25,
+        "methods": 0.2,
+        "operators": 0.0,
+        "tokens": 0.0
+      }
+    },
+    "all_matches": [
+      {
+        "pattern_id": "resource-leak",
+        "score": 0.8,
+        "confidence": 0.76
+      },
+      {
+        "pattern_id": "null-dereference",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "boundary-error",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "missing-null-check",
+        "score": 0.7,
+        "confidence": 0.6799999999999999
+      },
+      {
+        "pattern_id": "empty-exception-handler",
+        "score": 0.5474873734152916,
+        "confidence": 0.5579898987322334
+      },
+      {
+        "pattern_id": "string-equality-operator",
+        "score": 0.47000000000000003,
+        "confidence": 0.4960000000000001
+      }
+    ],
+    "snippet": "    public Version version() {\n        return VERSION;\n    }"
+  }
+]

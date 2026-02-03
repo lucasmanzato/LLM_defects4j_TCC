@@ -1,0 +1,181 @@
+================================================================================
+EXPLICAÇÃO DETALHADA DO ARQUIVO defects4j_signatures.json
+================================================================================
+
+Este arquivo contém as ASSINATURAS ESTRUTURAIS de 6 padrões de bugs encontrados 
+em código Java. Funciona como um banco de dados de referência que o sistema usa 
+para detectar bugs similares em repositórios.
+
+================================================================================
+ESTRUTURA GERAL
+================================================================================
+
+{
+  "pattern-id-1": [ lista de variações ],
+  "pattern-id-2": [ lista de variações ],
+  ...
+}
+
+================================================================================
+OS 6 PADRÕES DE BUG
+================================================================================
+
+1. NULL-DEREFERENCE (Dereferência de Nulo)
+   - Quando você usa um objeto sem verificar se é null primeiro
+   - Exemplos das 3 variações:
+     * if (obj != null) obj.method() — checa nulo antes
+     * return obj.field — acessa campo sem check
+     * obj.equals(other) — chama método sem validação
+
+2. BOUNDARY-ERROR (Erro de Limite)
+   - Acesso a array/string fora dos limites
+   - Exemplos das 3 variações:
+     * for (i = 0; i <= array.length; i++) — <= deveria ser <
+     * if (index <= size) — comparação incorreta
+     * substring(str, length) — pode ultrapassar limite
+
+3. STRING-EQUALITY-OPERATOR (Comparação de String com ==)
+   - Usa == em vez de .equals() para strings
+   - Exemplos das 3 variações:
+     * if (str1 == str2) — em condicional
+     * str == "" — comparação simples
+     * return s1 == s2 — retorna booleano errado
+
+4. EMPTY-EXCEPTION-HANDLER (Handler de Exceção Vazio)
+   - Captura exceção mas não faz nada (ignora)
+   - Exemplos das 2 variações:
+     * try { ... } catch (Exception e) { } — vazio silencioso
+     * catch (IOException ignored) { } — intencional mas problema
+
+5. RESOURCE-LEAK (Vazamento de Recurso)
+   - Abre arquivo/conexão sem fechar depois
+   - Exemplos das 3 variações:
+     * InputStream is = new FileInputStream(file) — sem try-finally
+     * BufferedReader br = new BufferedReader(...) — nunca fecha
+     * Connection conn = getConnection() — sem fechar
+
+6. MISSING-NULL-CHECK (Falta de Verificação de Nulo)
+   - Chama método em objeto que pode ser nulo
+   - Exemplos das 3 variações:
+     * if (obj.equals(other)) — obj pode ser nulo
+     * obj.toString() — sem verificar nulidade
+     * value.equals(expected) — chamada direta
+
+================================================================================
+CAMPOS DE CADA VARIAÇÃO
+================================================================================
+
+Para cada padrão, há múltiplas VARIAÇÕES (exemplos de como esse bug se manifesta):
+
+Campo               | Significado                          | Exemplo
+--------------------|--------------------------------------|---------------------------
+pattern_id          | ID único do padrão                   | "null-dereference"
+pattern_name        | Nome legível                         | "Null Dereference"
+ast_features        | Elementos da árvore sintática        | {"IfStatement": 1, "ForStatement": 0}
+token_sequence      | Sequência de palavras-chave          | ["if", "obj", "method"]
+control_flow        | Estruturas de controle               | ["if", "for", "while"]
+method_calls        | Métodos invocados                    | ["equals", "toString"]
+operators           | Operadores usados                    | ["==", "<=", "++"]
+complexity_score    | Complexidade relativa                | 1.0 a 2.0
+
+================================================================================
+DETALHES DOS CAMPOS AST_FEATURES
+================================================================================
+
+Cada variação rastreia a PRESENÇA e QUANTIDADE de estruturas sintáticas:
+
+- IfStatement: Número de condicionais if presentes
+- ForStatement: Número de loops for presentes
+- WhileStatement: Número de loops while presentes
+- MethodInvocation: Número de chamadas de métodos
+- TryStatement: Número de blocos try-catch
+
+Exemplo do primeiro padrão null-dereference:
+{
+  "IfStatement": 1,        ← Tem 1 if statement
+  "ForStatement": 0,       ← Não tem for
+  "WhileStatement": 0,     ← Não tem while
+  "MethodInvocation": 2,   ← Tem 2 chamadas de método
+  "TryStatement": 0        ← Não tem try-catch
+}
+
+================================================================================
+COMO É USADO NO SISTEMA
+================================================================================
+
+1. DURANTE A DETECÇÃO:
+   O sistema extrai features de cada método no código do repositório alvo
+
+2. COMPARAÇÃO:
+   Calcula similaridade entre as features do método e cada assinatura deste arquivo
+
+3. PONTUAÇÃO:
+   Se similaridade > limiar (0.3 por padrão), marca como bug potencial
+
+4. TOP-50:
+   Retorna os 50 métodos mais similares aos padrões
+
+================================================================================
+PESO NA PONTUAÇÃO FINAL
+================================================================================
+
+Cada dimensão tem um peso diferente no cálculo de similaridade:
+
+- AST features:      35%  (maior peso - estrutura sintática)
+- Control flow:      25%  (fluxo de controle)
+- Methods:           20%  (métodos chamados)
+- Operators:         10%  (operadores usados)
+- Tokens:            10%  (sequência de tokens)
+
+TOTAL:              100%
+
+================================================================================
+ORIGEM DOS PADRÕES
+================================================================================
+
+Estes padrões NÃO são importados automaticamente do Defects4J.
+
+São definidos MANUALMENTE em:
+→ src/matchers/pattern_library.py
+
+Os 6 padrões são INSPIRADOS nos tipos de bugs do dataset Defects4J, mas:
+- Os exemplos foram codificados à mão
+- As features são extraídas automaticamente pelo signature_generator.py
+- O arquivo JSON é gerado dinamicamente a cada execução
+
+Defects4J = INSPIRAÇÃO/CONCEITO
+Implementação = HARDCODED no projeto
+
+================================================================================
+EXEMPLO PRÁTICO: DETECÇÃO DE BOUNDARY-ERROR
+================================================================================
+
+Código suspeito encontrado:
+    for (int i = 0; i <= array.length; i++) {
+        process(array[i]);
+    }
+
+Features extraídas:
+    - ForStatement: 1
+    - Operadores: ["<=", "++", "="]
+    - token_sequence: ["for", "int", "i", "<=", "array", "length"]
+
+Comparação com assinatura:
+    - AST match: 100% (tem ForStatement)
+    - Operators match: 100% (mesmos operadores <=, ++, =)
+    - Tokens match: 80% (maioria dos tokens presentes)
+
+Resultado:
+    ✓ Similaridade: 0.89 (> 0.3 limiar)
+    ✓ Classificado como "boundary-error"
+    ✓ Confiança: 0.91
+
+================================================================================
+RESUMO FINAL
+================================================================================
+
+Este arquivo define "COMO CADA TIPO DE BUG SE PARECE" em código Java, permitindo
+ao sistema procurá-los automaticamente através de análise de similaridade 
+estrutural.
+
+É o coração do sistema de detecção baseado em padrões.

@@ -1,0 +1,199 @@
+================================================================================
+                    ARQUITETURA DE PASTAS - LLM_defects4j_TCC
+================================================================================
+
+## ESTRUTURA GERAL
+
+LLM_defects4j_TCC/
+├── docs/                    # 📖 Documentação
+├── scripts/                 # 🐍 Scripts de execução
+├── src/                     # 📦 Código modular
+├── dados/                   # 💾 Repositórios clonados
+├── outputs/                 # 📊 Resultados gerados
+├── .env                     # ⚙️ Configurações
+├── requirements.txt         # 📋 Dependências
+└── README.md                # 📄 Index geral
+
+================================================================================
+                              📖 docs/ - Documentação
+================================================================================
+
+docs/
+├── README.md                    # Índice de documentação
+├── ARQUITETURA_SIMILARIDADE.md  # Como funciona a detecção
+└── OLLAMA_SETUP.md             # Configuração do LLM
+
+Propósito: Documentação técnica e guias de uso
+
+================================================================================
+                            🐍 scripts/ - Scripts Principais
+================================================================================
+
+scripts/
+├── README.md              # Guia dos scripts
+├── pipeline.py           # 🎯 PASSO 1: Detecção de bugs
+├── classify.py           # 🎯 PASSO 2: Classificação com LLM
+├── report_markdown.py    # 📄 PASSO 3: Gera relatório MD
+├── report_html.py        # 🌐 PASSO 3: Gera relatório HTML
+└── monitor.py            # 📊 Monitora classificação em tempo real
+
+Propósito: Scripts executáveis para rodar o pipeline
+
+Fluxo:
+  1. pipeline.py → Detecta bugs → Salva em outputs/results.json
+  2. classify.py → Classifica com LLM → Atualiza outputs/results_with_llm.json
+  3. report_markdown.py → Gera outputs/relatorio_llm.md
+  4. report_html.py → Gera outputs/relatorio_visual.html
+
+================================================================================
+                           📦 src/ - Código Modular
+================================================================================
+
+src/
+├── extractors/              # 📥 Extração de features
+│   ├── java_parser.py       #   - Faz parsing de métodos Java com javalang
+│   ├── feature_extractor.py #   - Extrai AST, control flow, tokens, etc
+│   └── __init__.py
+│
+├── matchers/                # 🎯 Lógica de detecção
+│   ├── pattern_library.py    #   - Define 6 padrões Defects4J
+│   ├── signature_generator.py#   - Cria assinaturas dos padrões
+│   ├── similarity_matcher.py #   - Calcula similaridade multi-dimensional
+│   └── __init__.py
+│
+├── pipelines/               # 🔄 Orquestração
+│   ├── detection_pipeline.py #   - Orquestra: clone → extração → matching
+│   └── __init__.py
+│
+├── utils/                   # 🛠️ Utilitários
+│   ├── repo_cloner.py       #   - Clona repositórios Git
+│   └── __init__.py
+│
+└── __init__.py
+
+Propósito: Código reutilizável separado por responsabilidade
+
+Dependências entre módulos:
+  scripts/pipeline.py
+      ↓
+  detection_pipeline.py (orquestra todo processo)
+      ├→ repo_cloner.py (clona repo)
+      ├→ java_parser.py (extrai métodos)
+      ├→ feature_extractor.py (extrai features de cada método)
+      ├→ pattern_library.py (define padrões)
+      ├→ signature_generator.py (cria assinaturas)
+      └→ similarity_matcher.py (calcula scores)
+
+================================================================================
+                       💾 dados/ - Repositórios Clonados
+================================================================================
+
+dados/
+└── defects4j/               # Repositório Git clonado
+    ├── .git/
+    ├── framework/
+    ├── projects/
+    └── ...arquivos Java
+
+Propósito: Armazena o repositório clonado para análise
+Gerado por: scripts/pipeline.py → repo_cloner.py
+
+================================================================================
+                        📊 outputs/ - Resultados Gerados
+================================================================================
+
+outputs/
+├── results.json                  # Resultados brutos (50 bugs)
+├── results.csv                   # Formato tabular
+├── results_with_llm.json         # Resultados + classificação LLM
+├── defects4j_signatures.json     # Padrões usados na detecção
+├── relatorio_llm.md             # Relatório legível em Markdown
+├── relatorio_visual.html        # Relatório interativo com gráficos
+└── ExplicacaoResultsWithLLM.txt # Explicação detalhada do formato
+
+Propósito: Armazena todos os resultados da análise
+Gerados por:
+  - pipeline.py → results.json, results.csv, defects4j_signatures.json
+  - classify.py → results_with_llm.json
+  - report_markdown.py → relatorio_llm.md
+  - report_html.py → relatorio_visual.html
+
+================================================================================
+                      ⚙️ FLUXO DE DADOS COMPLETO
+================================================================================
+
+┌─────────────────────────────────────────────────────────────┐
+│                    PIPELINE COMPLETO                        │
+└─────────────────────────────────────────────────────────────┘
+
+1️⃣  PIPELINE.PY
+    github.com/rjust/defects4j.git
+            ↓
+    dados/defects4j/ (clonado)
+            ↓
+    Extrai 215 métodos Java
+            ↓
+    Feature Extraction (AST, control flow, etc)
+            ↓
+    Calcula similaridade contra 6 padrões
+            ↓
+    outputs/results.json (50 bugs)
+    outputs/results.csv
+    outputs/defects4j_signatures.json
+
+2️⃣  CLASSIFY.PY
+    outputs/results.json
+            ↓
+    Para cada bug:
+      - Envia para LLaMA via Ollama
+      - Obtém classificação + confiança
+            ↓
+    outputs/results_with_llm.json (50 bugs + LLM)
+
+3️⃣  REPORT_MARKDOWN.PY
+    outputs/results_with_llm.json
+            ↓
+    Gera relatório em Markdown
+            ↓
+    outputs/relatorio_llm.md
+
+4️⃣  REPORT_HTML.PY
+    outputs/results_with_llm.json
+            ↓
+    Gera gráficos e tabelas
+            ↓
+    outputs/relatorio_visual.html
+
+================================================================================
+                    📋 RESUMO DAS RESPONSABILIDADES
+================================================================================
+
+PASTA              │ RESPONSABILIDADE        │ INPUT              │ OUTPUT
+────────────────────┼─────────────────────────┼────────────────────┼──────────────────
+docs/              │ Documentação            │ -                  │ Guias técnicos
+scripts/           │ Execução                │ Código do src/     │ Arquivos de saída
+src/extractors     │ Parse de Java           │ .java files        │ Features estruturais
+src/matchers       │ Detecção de bugs        │ Features+Padrões   │ Scores similaridade
+src/pipelines      │ Orquestração            │ Repositório Git    │ Results.json
+src/utils          │ Utilitários             │ URLs Git           │ Repositório local
+dados/             │ Dados brutos            │ Pipeline output    │ Repo clonado
+outputs/           │ Resultados              │ Scripts            │ JSON, CSV, HTML, MD
+
+================================================================================
+                        🔄 CICLO DE EXECUÇÃO
+================================================================================
+
+# LIMPEZA
+rm -rf dados/* outputs/*
+
+# EXECUÇÃO
+python scripts/pipeline.py        # Gera results.json
+python scripts/classify.py        # Gera results_with_llm.json
+python scripts/report_markdown.py # Gera relatorio_llm.md
+python scripts/report_html.py     # Gera relatorio_visual.html
+
+# RESULTADOS FINAIS
+outputs/relatorio_llm.md     ← Ler aqui
+outputs/relatorio_visual.html ← Abrir no navegador
+
+================================================================================

@@ -1,0 +1,402 @@
+{
+  "null-dereference": [
+    {
+      "pattern_id": "null-dereference",
+      "pattern_name": "Null Dereference",
+      "ast_features": {
+        "IfStatement": 1,
+        "ForStatement": 0,
+        "WhileStatement": 0,
+        "MethodInvocation": 2,
+        "TryStatement": 0
+      },
+      "token_sequence": [
+        "if",
+        "obj",
+        "method"
+      ],
+      "control_flow": [
+        "if"
+      ],
+      "method_calls": [
+        "if",
+        "method"
+      ],
+      "operators": [],
+      "complexity_score": 2.0
+    },
+    {
+      "pattern_id": "null-dereference",
+      "pattern_name": "Null Dereference",
+      "ast_features": {
+        "IfStatement": 0,
+        "ForStatement": 0,
+        "WhileStatement": 0,
+        "MethodInvocation": 0,
+        "TryStatement": 0
+      },
+      "token_sequence": [
+        "return",
+        "obj",
+        "field"
+      ],
+      "control_flow": [],
+      "method_calls": [],
+      "operators": [],
+      "complexity_score": 1.0
+    },
+    {
+      "pattern_id": "null-dereference",
+      "pattern_name": "Null Dereference",
+      "ast_features": {
+        "IfStatement": 0,
+        "ForStatement": 0,
+        "WhileStatement": 0,
+        "MethodInvocation": 1,
+        "TryStatement": 0
+      },
+      "token_sequence": [
+        "obj",
+        "equals",
+        "other"
+      ],
+      "control_flow": [],
+      "method_calls": [
+        "equals"
+      ],
+      "operators": [],
+      "complexity_score": 1.0
+    }
+  ],
+  "boundary-error": [
+    {
+      "pattern_id": "boundary-error",
+      "pattern_name": "Boundary Error",
+      "ast_features": {
+        "IfStatement": 0,
+        "ForStatement": 1,
+        "WhileStatement": 0,
+        "MethodInvocation": 1,
+        "TryStatement": 0
+      },
+      "token_sequence": [
+        "for",
+        "int",
+        "i",
+        "=",
+        "i",
+        "<=",
+        "array",
+        "length",
+        "i",
+        "++"
+      ],
+      "control_flow": [
+        "for"
+      ],
+      "method_calls": [
+        "for"
+      ],
+      "operators": [
+        "<=",
+        "++",
+        "="
+      ],
+      "complexity_score": 2.0
+    },
+    {
+      "pattern_id": "boundary-error",
+      "pattern_name": "Boundary Error",
+      "ast_features": {
+        "IfStatement": 1,
+        "ForStatement": 0,
+        "WhileStatement": 0,
+        "MethodInvocation": 1,
+        "TryStatement": 0
+      },
+      "token_sequence": [
+        "if",
+        "index",
+        "<=",
+        "size"
+      ],
+      "control_flow": [
+        "if"
+      ],
+      "method_calls": [
+        "if"
+      ],
+      "operators": [
+        "<="
+      ],
+      "complexity_score": 2.0
+    },
+    {
+      "pattern_id": "boundary-error",
+      "pattern_name": "Boundary Error",
+      "ast_features": {
+        "IfStatement": 0,
+        "ForStatement": 0,
+        "WhileStatement": 0,
+        "MethodInvocation": 2,
+        "TryStatement": 0
+      },
+      "token_sequence": [
+        "substring",
+        "str",
+        "length"
+      ],
+      "control_flow": [],
+      "method_calls": [
+        "length",
+        "substring"
+      ],
+      "operators": [],
+      "complexity_score": 1.0
+    }
+  ],
+  "string-equality-operator": [
+    {
+      "pattern_id": "string-equality-operator",
+      "pattern_name": "String Equality with ==",
+      "ast_features": {
+        "IfStatement": 1,
+        "ForStatement": 0,
+        "WhileStatement": 0,
+        "MethodInvocation": 1,
+        "TryStatement": 0
+      },
+      "token_sequence": [
+        "if",
+        "str1",
+        "==",
+        "str2"
+      ],
+      "control_flow": [
+        "if"
+      ],
+      "method_calls": [
+        "if"
+      ],
+      "operators": [
+        "=="
+      ],
+      "complexity_score": 2.0
+    },
+    {
+      "pattern_id": "string-equality-operator",
+      "pattern_name": "String Equality with ==",
+      "ast_features": {
+        "IfStatement": 0,
+        "ForStatement": 0,
+        "WhileStatement": 0,
+        "MethodInvocation": 0,
+        "TryStatement": 0
+      },
+      "token_sequence": [
+        "str",
+        "=="
+      ],
+      "control_flow": [],
+      "method_calls": [],
+      "operators": [
+        "=="
+      ],
+      "complexity_score": 1.0
+    },
+    {
+      "pattern_id": "string-equality-operator",
+      "pattern_name": "String Equality with ==",
+      "ast_features": {
+        "IfStatement": 0,
+        "ForStatement": 0,
+        "WhileStatement": 0,
+        "MethodInvocation": 0,
+        "TryStatement": 0
+      },
+      "token_sequence": [
+        "return",
+        "s1",
+        "==",
+        "s2"
+      ],
+      "control_flow": [],
+      "method_calls": [],
+      "operators": [
+        "=="
+      ],
+      "complexity_score": 1.0
+    }
+  ],
+  "empty-exception-handler": [
+    {
+      "pattern_id": "empty-exception-handler",
+      "pattern_name": "Empty Exception Handler",
+      "ast_features": {
+        "IfStatement": 0,
+        "ForStatement": 0,
+        "WhileStatement": 0,
+        "MethodInvocation": 1,
+        "TryStatement": 1
+      },
+      "token_sequence": [
+        "try",
+        "catch",
+        "Exception",
+        "e"
+      ],
+      "control_flow": [
+        "try",
+        "catch"
+      ],
+      "method_calls": [],
+      "operators": [],
+      "complexity_score": 1.0
+    },
+    {
+      "pattern_id": "empty-exception-handler",
+      "pattern_name": "Empty Exception Handler",
+      "ast_features": {
+        "IfStatement": 0,
+        "ForStatement": 0,
+        "WhileStatement": 0,
+        "MethodInvocation": 1,
+        "TryStatement": 0
+      },
+      "token_sequence": [
+        "catch",
+        "IOException",
+        "ignored"
+      ],
+      "control_flow": [
+        "catch"
+      ],
+      "method_calls": [
+        "catch"
+      ],
+      "operators": [],
+      "complexity_score": 1.0
+    }
+  ],
+  "resource-leak": [
+    {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "ast_features": {
+        "IfStatement": 0,
+        "ForStatement": 0,
+        "WhileStatement": 0,
+        "MethodInvocation": 1,
+        "TryStatement": 0
+      },
+      "token_sequence": [
+        "InputStream",
+        "is",
+        "=",
+        "new",
+        "FileInputStream",
+        "file"
+      ],
+      "control_flow": [],
+      "method_calls": [],
+      "operators": [
+        "="
+      ],
+      "complexity_score": 1.0
+    },
+    {
+      "pattern_id": "resource-leak",
+      "pattern_name": "Resource Leak",
+      "ast_features": {
+        "IfStatement": 0,
+        "ForStatement": 0,
+        "WhileStatement": 0,
+        "MethodInvocation": 1,
+        "TryStatement": 0
+      },
+      "token_sequence": [
+        "Connection",
+        "conn",
+        "=",
+        "getConnection"
+      ],
+      "control_flow": [],
+      "method_calls": [],
+      "operators": [
+        "="
+      ],
+      "complexity_score": 1.0
+    }
+  ],
+  "missing-null-check": [
+    {
+      "pattern_id": "missing-null-check",
+      "pattern_name": "Missing Null Check",
+      "ast_features": {
+        "IfStatement": 1,
+        "ForStatement": 0,
+        "WhileStatement": 0,
+        "MethodInvocation": 2,
+        "TryStatement": 0
+      },
+      "token_sequence": [
+        "if",
+        "obj",
+        "equals",
+        "other"
+      ],
+      "control_flow": [
+        "if"
+      ],
+      "method_calls": [
+        "equals",
+        "if"
+      ],
+      "operators": [],
+      "complexity_score": 2.0
+    },
+    {
+      "pattern_id": "missing-null-check",
+      "pattern_name": "Missing Null Check",
+      "ast_features": {
+        "IfStatement": 0,
+        "ForStatement": 0,
+        "WhileStatement": 0,
+        "MethodInvocation": 1,
+        "TryStatement": 0
+      },
+      "token_sequence": [
+        "obj",
+        "toString"
+      ],
+      "control_flow": [],
+      "method_calls": [
+        "toString"
+      ],
+      "operators": [],
+      "complexity_score": 1.0
+    },
+    {
+      "pattern_id": "missing-null-check",
+      "pattern_name": "Missing Null Check",
+      "ast_features": {
+        "IfStatement": 0,
+        "ForStatement": 0,
+        "WhileStatement": 0,
+        "MethodInvocation": 1,
+        "TryStatement": 0
+      },
+      "token_sequence": [
+        "value",
+        "equals",
+        "expected"
+      ],
+      "control_flow": [],
+      "method_calls": [
+        "equals"
+      ],
+      "operators": [],
+      "complexity_score": 1.0
+    }
+  ]
+}

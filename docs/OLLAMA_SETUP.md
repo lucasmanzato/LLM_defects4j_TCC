@@ -59,7 +59,7 @@ OLLAMA_MODEL=llama2
 ### Passo 6: Executar
 
 ```bash
-python main.py
+python scripts/pipeline.py
 ```
 
 O sistema vai:

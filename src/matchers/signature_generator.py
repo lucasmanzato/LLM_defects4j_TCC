@@ -3,6 +3,7 @@ Gerador de assinatura de padrões.
 Cria assinaturas estruturais de exemplos de padrões de bugs.
 """
 import json
+import os
 from typing import Dict, List
 from dataclasses import dataclass, asdict
 
@@ -65,6 +66,10 @@ class SignatureGenerator:
     def save_signatures(self, output_path: str):
         """Salva assinaturas para JSON."""
         library = self.build_signature_library()
+
+        output_dir = os.path.dirname(output_path)
+        if output_dir:
+            os.makedirs(output_dir, exist_ok=True)
         
         data = {
             pattern_id: [sig.to_dict() for sig in sigs]

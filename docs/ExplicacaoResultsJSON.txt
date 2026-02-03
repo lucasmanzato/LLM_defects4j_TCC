@@ -1,0 +1,445 @@
+================================================================================
+EXPLICAÇÃO DETALHADA DO ARQUIVO results.json
+================================================================================
+
+Este arquivo contém os RESULTADOS DA DETECÇÃO ESTRUTURAL de bugs, gerado pelo
+pipeline de análise ANTES da validação pela IA.
+
+É a saída intermediária que depois será processada pelo classify.py para 
+adicionar a classificação do LLaMA.
+
+================================================================================
+ESTRUTURA GERAL
+================================================================================
+
+[
+  {
+    "file": "caminho/arquivo.java",
+    "class": "NomeDaClasse",
+    "method": "nomeDoMetodo",
+    "match": { ... },
+    "all_matches": [ ... ],
+    "snippet": "código completo do método"
+  },
+  ...
+]
+
+Array com 50 objetos (top-50 bugs detectados por similaridade estrutural).
+
+================================================================================
+DIFERENÇA CHAVE: results.json vs results_with_llm.json
+================================================================================
+
+results.json (ESTE ARQUIVO)
+  ✓ Apenas detecção estrutural (matemática/padrões)
+  ✓ Gerado pelo pipeline.py
+  ✓ Não tem classificação da IA
+  ✗ Sem llm_classification
+
+results_with_llm.json
+  ✓ Detecção estrutural + validação IA
+  ✓ Gerado pelo classify.py
+  ✓ TEM classificação da IA
+  ✓ Campo llm_classification adicional
+
+FLUXO:
+  pipeline.py → results.json → classify.py → results_with_llm.json
+
+================================================================================
+CAMPOS DE CADA DETECÇÃO
+================================================================================
+
+1. IDENTIFICAÇÃO DO CÓDIGO
+---------------------------
+file     → Caminho completo do arquivo .java
+class    → Nome da classe (null se não detectado)
+method   → Nome do método onde está o bug
+snippet  → Código COMPLETO do método (100-500 linhas)
+
+Exemplo:
+"file": "dados\\defects4j\\framework\\test\\...\\ValidTestClass.java"
+"class": "ValidTestClass"
+"method": "test0"
+"snippet": "\n  public void test0() {\n    String str = new String();\n    ..."
+
+
+2. CORRESPONDÊNCIA PRINCIPAL (match)
+-------------------------------------
+pattern_id   → ID do padrão com maior similaridade
+pattern_name → Nome legível do padrão
+score        → Pontuação total (0.0 a 1.0)
+confidence   → Confiança na detecção (0.0 a 1.0)
+breakdown    → Contribuição de cada dimensão:
+               - ast: 0.0 a 0.35 (35% peso máximo)
+               - control_flow: 0.0 a 0.25 (25% peso)
+               - methods: 0.0 a 0.20 (20% peso)
+               - operators: 0.0 a 0.10 (10% peso)
+               - tokens: 0.0 a 0.10 (10% peso)
+
+Exemplo:
+"match": {
+  "pattern_id": "resource-leak",
+  "pattern_name": "Resource Leak",
+  "score": 0.92,
+  "confidence": 0.936,
+  "breakdown": {
+    "ast": 0.35,           ← Match perfeito (0.35/0.35)
+    "control_flow": 0.25,  ← Match perfeito (0.25/0.25)
+    "methods": 0.2,        ← Match perfeito (0.20/0.20)
+    "operators": 0.1,      ← Match perfeito (0.10/0.10)
+    "tokens": 0.02         ← Match fraco (0.02/0.10)
+  }
+}
+
+
+3. TODAS AS CORRESPONDÊNCIAS (all_matches)
+-------------------------------------------
+Lista com score de TODOS os 6 padrões testados, ordenados por score.
+
+Mostra que o código foi comparado contra TODOS os padrões disponíveis,
+mas apenas o melhor foi selecionado como "match".
+
+Estrutura:
+[
+  {
+    "pattern_id": "resource-leak",
+    "score": 0.92,
+    "confidence": 0.936
+  },
+  {
+    "pattern_id": "boundary-error",
+    "score": 0.61,
+    "confidence": 0.608
+  },
+  ...
+]
+
+UTILIDADE:
+- Ver padrões "alternativos" que quase bateram
+- Identificar código com múltiplas características suspeitas
+- Calibrar threshold (se 2º lugar está próximo do 1º)
+
+
+4. SNIPPET (trecho de código)
+------------------------------
+Código COMPLETO do método analisado.
+
+Diferente do CSV (que está vazio), aqui o snippet contém o código real
+para que possa ser enviado posteriormente para a IA classificar.
+
+Exemplo:
+"snippet": "
+  public void test0() {
+    String str = new String();
+    str = 123456789;
+  }"
+
+NOTA: Pode conter 100-500 linhas dependendo do tamanho do método.
+
+================================================================================
+EXEMPLO COMPLETO: PRIMEIRO BUG DETECTADO
+================================================================================
+
+{
+  "file": "dados\\defects4j\\framework\\test\\resources\\input\\foo\\bar\\UnitTestsWithCompilationIssues.java",
+  "class": null,
+  "method": "test0",
+  "match": {
+    "pattern_id": "resource-leak",
+    "pattern_name": "Resource Leak",
+    "score": 0.92,
+    "confidence": 0.936,
+    "breakdown": {
+      "ast": 0.35,
+      "control_flow": 0.25,
+      "methods": 0.2,
+      "operators": 0.1,
+      "tokens": 0.02
+    }
+  },
+  "all_matches": [
+    { "pattern_id": "resource-leak", "score": 0.92, "confidence": 0.936 },
+    { "pattern_id": "boundary-error", "score": 0.61, "confidence": 0.608 },
+    { "pattern_id": "null-dereference", "score": 0.6, "confidence": 0.56 },
+    { "pattern_id": "missing-null-check", "score": 0.6, "confidence": 0.56 },
+    { "pattern_id": "string-equality-operator", "score": 0.46, "confidence": 0.49 },
+    { "pattern_id": "empty-exception-handler", "score": 0.45, "confidence": 0.44 }
+  ],
+  "snippet": "\n  public void test0() {\n    String str = new String();\n    str = 123456789;\n  }"
+}
+
+INTERPRETAÇÃO:
+--------------
+Arquivo: UnitTestsWithCompilationIssues.java (arquivo de teste com problemas)
+Classe: Não detectada (null)
+Método: test0
+
+PADRÃO DETECTADO: Resource Leak (vazamento de recurso)
+  Score: 0.92 (92% similar ao padrão)
+  Confiança: 0.936 (93.6%)
+  
+ANÁLISE POR DIMENSÃO:
+  ✓ AST: 0.35 → Match perfeito (100%)
+  ✓ Control flow: 0.25 → Match perfeito (100%)
+  ✓ Methods: 0.20 → Match perfeito (100%)
+  ✓ Operators: 0.10 → Match perfeito (100%)
+  ✗ Tokens: 0.02 → Match fraco (20%)
+  
+PADRÕES ALTERNATIVOS:
+  2º lugar: boundary-error (0.61)
+  3º lugar: null-dereference (0.60)
+  → Código tem características de múltiplos padrões!
+
+CÓDIGO:
+  public void test0() {
+    String str = new String();  ← Cria objeto String
+    str = 123456789;            ← Reatribui com int (erro de compilação!)
+  }
+
+PROBLEMA:
+  - new String() cria objeto mas nunca é usado
+  - Reatribuição com tipo incompatível
+  - Objeto original fica "órfão" na memória (resource leak)
+
+================================================================================
+COMO O ARQUIVO É GERADO
+================================================================================
+
+1. Pipeline executa (scripts/pipeline.py)
+   ↓
+2. Clona repositório e extrai métodos Java
+   ↓
+3. Calcula features estruturais de cada método
+   ↓
+4. Compara features contra assinaturas (defects4j_signatures.json)
+   ↓
+5. Calcula score de similaridade para cada padrão
+   ↓
+6. Ranqueia métodos por score
+   ↓
+7. Seleciona TOP-50 (threshold > 0.3)
+   ↓
+8. Salva em results.json ← ESTE ARQUIVO
+
+Código responsável:
+→ src/pipelines/detection_pipeline.py
+→ Função: save_results() (linha ~170)
+
+================================================================================
+ESTATÍSTICAS DESTE ARQUIVO ESPECÍFICO
+================================================================================
+
+Total de bugs detectados:     50
+Tamanho do arquivo:           2547 linhas
+Formato:                      JSON (array de objetos)
+
+Padrões detectados:
+  - Resource Leak:             49 ocorrências (98%)
+  - Missing Null Check:        1 ocorrência (2%)
+
+Faixa de scores:
+  Máximo:                      0.92 (3 bugs)
+  Mínimo:                      ~0.65 (bug #50)
+  Média:                       ~0.78
+
+Classes mais afetadas:
+  1. PackageVersion:           16 bugs
+  2. Formatter:                7 bugs
+  3. Testes diversos:          27 bugs
+
+Arquivos únicos:              34 arquivos diferentes
+Métodos únicos:               50 métodos (sem duplicatas)
+
+Breakdown típico:
+  - ast sempre 0.35            (100% match na maioria)
+  - control_flow sempre 0.25   (100% match na maioria)
+  - methods varia 0.10-0.20    (50-100% match)
+  - operators varia 0.00-0.10  (0-100% match)
+  - tokens varia 0.00-0.02     (0-20% match)
+
+OBSERVAÇÃO:
+Muitos bugs têm breakdown idêntico porque:
+- Código gerado automaticamente (PackageVersion.java)
+- Padrões repetitivos em testes
+- Estrutura similar entre métodos
+
+================================================================================
+USO PRÁTICO DO ARQUIVO
+================================================================================
+
+1. ANÁLISE PROGRAMÁTICA
+   import json
+   
+   with open('results.json', 'r') as f:
+       bugs = json.load(f)
+   
+   # Filtrar por score alto
+   high_priority = [b for b in bugs if b['match']['score'] >= 0.9]
+   
+   # Contar padrões
+   from collections import Counter
+   patterns = [b['match']['pattern_id'] for b in bugs]
+   Counter(patterns)
+   
+   # Ver código dos top 5
+   for bug in bugs[:5]:
+       print(f"\n{bug['file']}")
+       print(bug['snippet'])
+
+2. INSPEÇÃO MANUAL
+   - Ver snippet completo de cada bug
+   - Entender contexto do código
+   - Validar se detecção faz sentido
+   - Identificar falsos positivos
+
+3. ENTRADA PARA CLASSIFICAÇÃO
+   - classify.py lê este arquivo
+   - Envia cada snippet para LLaMA
+   - LLaMA valida se é bug real
+   - Gera results_with_llm.json
+
+4. CALIBRAÇÃO DO SISTEMA
+   - Ajustar threshold (padrão: 0.3)
+   - Ajustar pesos (AST, control_flow, etc.)
+   - Adicionar/remover padrões
+   - Melhorar assinaturas
+
+================================================================================
+COMPARAÇÃO ENTRE FORMATOS DE OUTPUT
+================================================================================
+
+results.json (ESTE ARQUIVO)
+  ✓ Formato JSON estruturado
+  ✓ Inclui snippet COMPLETO de código
+  ✓ Inclui all_matches (6 padrões)
+  ✓ Fácil de processar programaticamente
+  ✗ SEM classificação da IA
+  → Saída intermediária
+
+results_with_llm.json
+  ✓ Tudo do results.json
+  ✓ MAIS: llm_classification com validação IA
+  ✓ Campo eh_bug_real, confianca, motivo
+  → Saída final completa
+
+results.csv
+  ✓ Formato tabular (Excel)
+  ✓ Fácil filtrar/ordenar
+  ✗ SEM snippet (vazio)
+  ✗ SEM all_matches
+  ✗ SEM classificação IA
+  → Para análise estatística
+
+relatorio_llm.md
+  ✓ Relatório legível
+  ✓ Estatísticas agregadas
+  ✓ Top bugs destacados
+  ✓ Usa dados do results_with_llm.json
+  → Para apresentação
+
+================================================================================
+QUANDO USAR ESTE ARQUIVO
+================================================================================
+
+USE results.json QUANDO:
+  ✓ Quiser analisar detecção estrutural pura
+  ✓ Precisar do código completo (snippet)
+  ✓ Quiser ver todos os 6 padrões testados (all_matches)
+  ✓ For processar dados programaticamente
+  ✓ Quiser validar manualmente antes da IA
+  ✓ For debugar o sistema de detecção
+
+NÃO USE results.json QUANDO:
+  ✗ Precisar da validação da IA (use results_with_llm.json)
+  ✗ Quiser apenas estatísticas (use relatorio_llm.md)
+  ✗ Preferir formato planilha (use results.csv)
+  ✗ For apresentar para não-técnicos (use relatorio_llm.md)
+
+================================================================================
+LIMITAÇÕES E CONSIDERAÇÕES
+================================================================================
+
+1. SEM VALIDAÇÃO HUMANA/IA
+   - Apenas similaridade matemática
+   - Pode ter falsos positivos
+   - Não entende contexto semântico
+   → Por isso precisa do classify.py depois
+
+2. THRESHOLD FIXO (0.3)
+   - Configurável via .env (SIMILARITY_THRESHOLD)
+   - Valores típicos: 0.2 (mais permissivo) a 0.5 (mais restritivo)
+   - Padrão 0.3 balanceia precisão e recall
+
+3. TOP-50 FIXO
+   - Configurável via .env (TOP_K)
+   - Limita saída para evitar sobrecarga
+   - Pode perder bugs com score < 50º colocado
+
+4. DEPENDÊNCIA DAS ASSINATURAS
+   - Qualidade depende de defects4j_signatures.json
+   - Padrões hardcoded podem não cobrir tudo
+   - Precisa atualização para novos tipos de bug
+
+5. PARSER JAVA LIMITADO
+   - class pode ser null se parser falhar
+   - Código com erros de sintaxe pode ser ignorado
+   - Dependente da biblioteca javalang
+
+================================================================================
+EXEMPLO: ANÁLISE DE UM BUG COM ALL_MATCHES
+================================================================================
+
+Bug com múltiplas características:
+
+"match": {
+  "pattern_id": "resource-leak",  ← Melhor match
+  "score": 0.92
+}
+
+"all_matches": [
+  { "pattern_id": "resource-leak", "score": 0.92 },      ← 1º lugar
+  { "pattern_id": "boundary-error", "score": 0.61 },     ← 2º lugar
+  { "pattern_id": "null-dereference", "score": 0.60 },   ← 3º lugar (quase empate!)
+  { "pattern_id": "missing-null-check", "score": 0.60 }, ← 3º lugar (empate!)
+  { "pattern_id": "string-equality-operator", "score": 0.46 },
+  { "pattern_id": "empty-exception-handler", "score": 0.45 }
+]
+
+INTERPRETAÇÃO:
+- Código tem FORTE característica de resource-leak (0.92)
+- MAS TAMBÉM tem características de:
+  * boundary-error (0.61) - moderado
+  * null-dereference (0.60) - moderado
+  * missing-null-check (0.60) - moderado
+  
+CONCLUSÃO:
+- É provável um resource-leak
+- Mas pode ser um bug complexo com múltiplos problemas
+- Ou código confuso que se parece com vários padrões
+- Validação manual/IA é essencial para confirmar
+
+================================================================================
+RESUMO FINAL
+================================================================================
+
+Este arquivo é a SAÍDA INTERMEDIÁRIA do sistema:
+- Contém detecção estrutural pura (matemática)
+- Inclui código completo de cada método suspeito
+- Mostra todos os 6 padrões testados
+- Ranqueia top-50 bugs por similaridade
+
+É gerado por:
+  scripts/pipeline.py → results.json
+
+É consumido por:
+  scripts/classify.py → results_with_llm.json
+
+Use-o para:
+  ✓ Validar qualidade da detecção estrutural
+  ✓ Analisar código suspeito manualmente
+  ✓ Entender quais padrões o código se parece
+  ✓ Calibrar threshold e pesos
+  ✓ Debugar o sistema de matching
+
+Para análise final com validação IA:
+  → Use results_with_llm.json ou relatorio_llm.md

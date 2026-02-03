@@ -11,8 +11,8 @@ python scripts/pipeline.py
 # Classifique com LLaMA
 python scripts/classify.py
 
-# Gere relatórios automaticamente
-python scripts/wait_report.py
+# Gere relatórios
+python scripts/report_markdown.py
 ```
 
 ## 📋 Scripts Disponíveis
@@ -39,13 +39,6 @@ python scripts/pipeline.py
 python scripts/classify.py
 ```
 
-### `report_preview.py`
-**Função**: Mostra prévia formatada dos dados
-
-```bash
-python scripts/report_preview.py
-```
-
 ### `report_markdown.py`
 **Função**: Gera relatório em Markdown
 
@@ -67,32 +60,15 @@ python scripts/report_html.py
 python scripts/monitor.py
 ```
 
-### `wait_report.py`
-**Função**: Aguarda classificação e gera relatórios automaticamente
-
-```bash
-python scripts/wait_report.py
-```
-
-### `run_all.py`
-**Função**: Orquestra toda a pipeline
-
-```bash
-python scripts/run_all.py
-```
-
 ## 📁 Estrutura
 
 ```
 scripts/
 ├── pipeline.py           (Detecção)
 ├── classify.py           (LLaMA)
-├── report_preview.py     (Preview)
 ├── report_markdown.py    (MD)
 ├── report_html.py        (HTML)
-├── monitor.py            (Monitor)
-├── wait_report.py        (Aguarda)
-└── run_all.py            (Orquestra)
+└── monitor.py            (Monitor)
 ```
 
 ## 🔗 Referências
